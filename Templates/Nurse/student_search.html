@@ -1,0 +1,87 @@
+{% extends "Nurse/index.html" %}
+
+{% block title %}
+Search Student
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-6">
+
+            <div class="card shadow rounded-4 border-0">
+
+                <div class="card-header bg-danger text-white py-3">
+
+                    <h4 class="mb-0">
+                        <i class="bi bi-search me-2"></i>
+                        Search Student
+                    </h4>
+
+                </div>
+
+                <div class="card-body p-4">
+
+                    <form id="studentForm">
+
+                        <div class="mb-4">
+
+                            <label class="form-label fw-semibold">
+                                Register Number
+                            </label>
+
+                            <input type="text" id="reg_no" name="reg_no" class="form-control form-control-lg" placeholder="Enter Register Number" required>
+
+                        </div>
+
+                        <div class="text-center">
+
+                            <button type="submit" class="btn btn-danger px-5">
+                                <i class="bi bi-search me-2"></i>
+                                Search Student
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block script %}
+
+<script>
+
+document.getElementById("studentForm").addEventListener("submit", function(e){
+
+    e.preventDefault();
+
+    const reg = document.getElementById("reg_no").value.trim();
+
+    if(reg === ""){
+
+        alert("Please enter the Register Number.");
+
+        return;
+
+    }
+
+    window.location.href = "/nurse/student-visit/" + reg + "/";
+
+});
+
+</script>
+
+{% endblock %}

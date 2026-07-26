@@ -1,0 +1,97 @@
+{% extends "Staff/index.html" %}
+{% load static %}
+
+{% block title %}
+Staff Dashboard
+{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+
+    <div class="col-lg-8">
+
+        <div class="card shadow-sm border-0">
+
+            <div class="card-header bg-success text-white">
+
+                <h4 class="mb-0">
+
+                    <i class="bi bi-person-badge-fill me-2"></i>
+
+                    Staff Profile
+
+                </h4>
+
+            </div>
+
+            <div class="card-body">
+
+                <div class="row align-items-center">
+
+                    <!-- Profile Image -->
+
+                    <div class="col-md-4 text-center mb-4 mb-md-0">
+
+                        <img src="{% static 'images/staff.png' %}"
+                             class="img-fluid rounded-circle border border-3 border-success shadow"
+                             style="width:180px;height:180px;object-fit:cover;">
+
+                    </div>
+
+                    <!-- Staff Details -->
+
+                    <div class="col-md-8">
+
+                        <table class="table table-borderless mb-0">
+
+                            <tr>
+                                <th width="35%">Staff Name</th>
+                                <td>: {{ staff.name }}</td>
+                            </tr>
+
+                            <tr>
+                                <th>Staff ID</th>
+                                <td>: {{ staff.staff_id }}</td>
+                            </tr>
+
+                            <tr>
+                                <th>Department</th>
+                                <td>: {{ staff.department }}</td>
+                            </tr>
+
+                            <tr>
+                                <th>Designation</th>
+                                <td>: {{ staff.designation }}</td>
+                            </tr>
+
+                            <tr>
+                                <th>Gender</th>
+                                <td>: {{ staff.gender }}</td>
+                            </tr>
+
+                            <tr>
+                                <th>Phone</th>
+                                <td>: {{ staff.phone }}</td>
+                            </tr>
+
+                            <tr>
+                                <th>Email</th>
+                                <td>: {{ staff.email }}</td>
+                            </tr>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

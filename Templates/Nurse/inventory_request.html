@@ -1,0 +1,257 @@
+{% extends "Nurse/index.html" %}
+{% load static %}
+
+{% block title %}Inventory Purchase Request{% endblock %}
+
+{% block content %}
+
+<div class="container py-4">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-primary text-white">
+
+            <h3 class="mb-0">
+                <i class="bi bi-clipboard2-plus"></i>
+                Inventory Purchase Request
+            </h3>
+
+        </div>
+
+        <div class="card-body">
+
+            <form id="requestForm"
+                  method="POST"
+                  action="{% url 'download_inventory_pdf' %}">
+
+                {% csrf_token %}
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label fw-bold">
+
+                            Select Inventory Item
+
+                        </label>
+
+                        <select
+                            id="itemSelect"
+                            class="form-select">
+
+                            <option value="">Choose Item</option>
+
+                            {% for item in inventory %}
+
+                           <option value="{{ item.medicine_name }}">
+    {{ item.medicine_name }} (Available: {{ item.quantity }})
+</option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+                    <div class="col-md-3 mb-3">
+
+                        <label class="form-label fw-bold">
+
+                            Required Qty
+
+                        </label>
+
+                        <input
+                            type="number"
+                            id="qty"
+                            class="form-control"
+                            min="1">
+
+                    </div>
+
+                    <div class="col-md-3 d-flex align-items-end">
+
+                        <button
+                            type="button"
+                            class="btn btn-success w-100"
+                            onclick="addItem()">
+
+                            <i class="bi bi-plus-circle"></i>
+
+                            Add Item
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <hr>
+
+                <h5>
+
+                    Selected Items
+
+                </h5>
+
+                <table class="table table-bordered table-striped">
+
+                    <thead class="table-dark">
+
+                        <tr>
+
+                            <th width="60">#</th>
+
+                            <th>Item</th>
+
+                            <th width="150">Quantity</th>
+
+                            <th width="100">Action</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="itemTable">
+
+                    </tbody>
+
+                </table>
+
+                <input
+                    type="hidden"
+                    id="itemsData"
+                    name="items">
+
+                <div class="mb-3">
+
+                    <label class="form-label fw-bold">
+
+                        Remarks (Optional)
+
+                    </label>
+
+                    <textarea
+                        name="remarks"
+                        rows="3"
+                        class="form-control"
+                        placeholder="Example : Monthly stock refill">
+
+                    </textarea>
+
+                </div>
+
+                <div class="text-end">
+
+                    <button
+                        type="submit"
+                        class="btn btn-danger btn-lg"
+                        onclick="prepareData()">
+
+                        <i class="bi bi-file-earmark-pdf"></i>
+
+                        Download PDF
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+let items = [];
+
+function addItem(){
+
+    let item = document.getElementById("itemSelect").value;
+
+    let qty = document.getElementById("qty").value;
+
+    if(item=="" || qty==""){
+
+        alert("Select item and quantity");
+
+        return;
+
+    }
+
+    items.push({
+
+        item:item,
+
+        qty:qty
+
+    });
+
+    renderTable();
+
+    document.getElementById("qty").value="";
+    document.getElementById("itemSelect").selectedIndex=0;
+
+}
+
+function renderTable(){
+
+    let tbody=document.getElementById("itemTable");
+
+    tbody.innerHTML="";
+
+    items.forEach((x,index)=>{
+
+        tbody.innerHTML+=`
+
+        <tr>
+
+            <td>${index+1}</td>
+
+            <td>${x.item}</td>
+
+            <td>${x.qty}</td>
+
+            <td>
+
+                <button
+                    type="button"
+                    class="btn btn-sm btn-danger"
+                    onclick="removeItem(${index})">
+
+                    Remove
+
+                </button>
+
+            </td>
+
+        </tr>
+
+        `;
+
+    });
+
+}
+
+function removeItem(index){
+
+    items.splice(index,1);
+
+    renderTable();
+
+}
+
+function prepareData(){
+
+    document.getElementById("itemsData").value=
+    JSON.stringify(items);
+
+}
+
+</script>
+
+{% endblock %}

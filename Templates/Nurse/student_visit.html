@@ -1,0 +1,242 @@
+{% extends "Nurse/index.html" %}
+
+{% block title %}
+Student Visit
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-danger text-white">
+            <h4 class="mb-0">
+                Student Visit
+            </h4>
+        </div>
+
+        <div class="card-body">
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+                <h5 class="text-danger mb-3">
+                    Student Information
+                </h5>
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Register Number</label>
+                        <input type="text" class="form-control" value="{{ student.reg_no }}" readonly>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Student Name</label>
+                        <input type="text" class="form-control" value="{{ student.name }}" readonly>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Department</label>
+                        <input type="text" class="form-control" value="{{ student.department }}" readonly>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Year</label>
+                        <input type="text" class="form-control" value="{{ student.Year }}" readonly>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Blood Group</label>
+                        <input type="text" class="form-control" value="{{ student.blood_group }}" readonly>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Phone</label>
+                        <input type="text" class="form-control" value="{{ student.phone }}" readonly>
+                    </div>
+
+                </div>
+
+                <hr>
+
+                <h5 class="text-danger mb-3">
+                    Visit Details
+                </h5>
+
+                <div class="row">
+
+                    <!-- Problem -->
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+                            Problem
+                        </label>
+
+                        <select class="form-select" name="problem" required>
+
+    <option value="">Select Problem</option>
+
+    {% for value,label in problems %}
+
+        <option value="{{ value }}">
+            {{ label }}
+        </option>
+
+    {% endfor %}
+
+</select>
+
+                    </div>
+
+                    <!-- Medicine -->
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+                            Medicine Given
+                        </label>
+
+                        <select class="form-select" name="medicine" required>
+
+                            <option value="">
+                                Select Medicine
+                            </option>
+
+                            {% for medicine in medicines %}
+                                <option value="{{ medicine.medicine_name }}">
+                                    {{ medicine.medicine_name }}
+                                </option>
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+                    <!-- Staff Department -->
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+                            Staff Department
+                        </label>
+
+                        <select class="form-select" id="department" name="department" required>
+
+                            <option value="">
+                                Select Department
+                            </option>
+
+                            {% for dept in departments %}
+                                <option value="{{ dept.department }}">
+                                    {{ dept.department }}
+                                </option>
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+                    <!-- Staff Name -->
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+                            Staff Name
+                        </label>
+
+                        <select class="form-select" id="staff_name" name="staff_name" required>
+
+                            <option value="">
+                                Select Staff
+                            </option>
+
+                            {% for staff in staffs %}
+                                <option value="{{ staff.name }}" data-department="{{ staff.department }}">
+                                    {{ staff.name }}
+                                </option>
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+                
+                    <!-- Chronic -->
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+                            Chronic Illness
+                        </label>
+
+                        <select class="form-select" name="chronic_illness" required>
+
+            <option value="">
+                    Select
+                </option>
+
+        {% for value, label in chronic_choices %}
+
+            <option value="{{ value }}">
+                {{ label }}
+            </option>
+
+        {% endfor %}
+
+    </select>
+                <div class="col-md-6" id="nextCheckupDiv" style="display:none;">
+                <label>Next Check-up</label>
+                <input type="date" name="next_checkup" id="next_checkup" class="form-control">
+                </div>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-4">
+
+                    <button type="submit" class="btn btn-danger px-5">
+                        Save Visit
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+const department = document.getElementById("department");
+const staff = document.getElementById("staff_name");
+
+const options = Array.from(staff.options);
+
+department.addEventListener("change", function(){
+
+    let dept = this.value;
+
+    staff.innerHTML = '<option value="">Select Staff</option>';
+
+    options.forEach(function(option){
+
+        if(option.value == "") return;
+
+        if(option.dataset.department == dept){
+
+            staff.appendChild(option.cloneNode(true));
+
+        }
+
+    });
+
+});
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,225 @@
+{% extends "Student/index.html" %}
+
+{% block title %}
+Notice
+{% endblock %}
+
+{% block content %}
+
+<div class="card border-0 shadow-sm">
+
+    <div class="card-header bg-primary text-white">
+
+        <h4 class="mb-0">
+
+            <i class="bi bi-megaphone-fill me-2"></i>
+
+            Medical Notice
+
+        </h4>
+
+    </div>
+
+    <div class="card-body">
+
+        {% if visit %}
+
+            {% if visit.chronic_illness %}
+
+                {% if remaining < 0 %}
+
+                <!-- Overdue -->
+
+                <div class="alert alert-danger border-start border-5 border-danger">
+
+                    <div class="d-flex align-items-center mb-3">
+
+                        <i class="bi bi-exclamation-triangle-fill display-6 me-3"></i>
+
+                        <div>
+
+                            <h4 class="mb-1">Medical Follow-up Overdue</h4>
+
+                            <p class="mb-0">
+                                Your scheduled medical review has been missed.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <hr>
+
+                    <div class="row">
+
+                        <div class="col-md-6 mb-3">
+
+                            <strong>Chronic Illness</strong><br>
+
+                            {{ visit.chronic_illness }}
+
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+
+                            <strong>Next Check-up Date</strong><br>
+
+                            {{ next_date }}
+
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+
+                            <strong>Overdue By</strong><br>
+
+                            <span class="badge bg-danger fs-6">
+
+                                {{ overdue_days }} Days
+
+                            </span>
+
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+
+                            <strong>Status</strong><br>
+
+                            <span class="badge bg-danger fs-6">
+
+                                Immediate Visit Required
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                {% else %}
+
+                <!-- Upcoming -->
+
+                <div class="alert alert-warning border-start border-5 border-warning">
+
+                    <div class="d-flex align-items-center mb-3">
+
+                        <i class="bi bi-heart-pulse-fill display-6 me-3"></i>
+
+                        <div>
+
+                            <h4 class="mb-1">Upcoming Medical Follow-up</h4>
+
+                            <p class="mb-0">
+
+                                Please attend your next medical review on time.
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <hr>
+
+                    <div class="row">
+
+                        <div class="col-md-6 mb-3">
+
+                            <strong>Chronic Illness</strong><br>
+
+                            {{ visit.chronic_illness }}
+
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+
+                            <strong>Next Check-up Date</strong><br>
+
+                            {{ next_date }}
+
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+
+                            <strong>Days Remaining</strong><br>
+
+                            <span class="badge bg-warning text-dark fs-6">
+
+                                {{ remaining }} Days
+
+                            </span>
+
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+
+                            <strong>Status</strong><br>
+
+                            <span class="badge bg-success fs-6">
+
+                                Upcoming
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                {% endif %}
+
+            {% else %}
+
+            <!-- No Chronic Illness -->
+
+            <div class="alert alert-success text-center py-5">
+
+                <i class="bi bi-check-circle-fill display-3"></i>
+
+                <h3 class="mt-3">
+
+                    No Medical Alerts
+
+                </h3>
+
+                <p class="text-muted mb-0">
+
+                    You have no chronic illness and no pending medical follow-up.
+
+                </p>
+
+            </div>
+
+            {% endif %}
+
+        {% else %}
+
+        <!-- No Visit -->
+
+        <div class="alert alert-info text-center py-5">
+
+            <i class="bi bi-info-circle-fill display-3"></i>
+
+            <h3 class="mt-3">
+
+                No Medical Records Found
+
+            </h3>
+
+            <p class="text-muted mb-0">
+
+                No visit history is available.
+
+            </p>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

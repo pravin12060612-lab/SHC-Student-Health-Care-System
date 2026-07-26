@@ -1,0 +1,172 @@
+{% extends "Account/index.html" %}
+{% load static %}
+
+{% block title %}Staff Login{% endblock title %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-5 col-md-7 col-sm-10">
+
+            <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+
+                <!-- Header -->
+
+                <div class="bg-success text-white text-center py-4">
+
+                    <i class="bi bi-person-workspace display-4"></i>
+
+                    <h3 class="mt-2 fw-bold">
+                        Staff Login
+                    </h3>
+
+                    <p class="mb-0">
+                        SHC Student Health Care System
+                    </p>
+
+                </div>
+
+                <!-- Body -->
+
+                <div class="card-body p-4">
+ {% if messages %}
+                        {% for message in messages %}
+
+                     <div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-{{ message.tags }}{% endif %}">
+                            {{ message }}
+                        </div>
+
+                        {% endfor %}
+                    {% endif %}
+
+                    <form method="POST" action="{% url 'staff_valid' %}">
+
+                        {% csrf_token %}
+
+                        <!-- Staff ID -->
+
+                        <div class="mb-3">
+
+                            <label class="form-label fw-semibold">
+                                Staff ID
+                            </label>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text">
+                                    <i class="bi bi-person-badge-fill"></i>
+                                </span>
+
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    name="username"
+                                    placeholder="Enter Staff ID"
+                                    required>
+
+                            </div>
+
+                        </div>
+
+                        <!-- Password -->
+
+                        <div class="mb-4">
+
+                            <label class="form-label fw-semibold">
+                                Password
+                            </label>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text">
+                                    <i class="bi bi-lock-fill"></i>
+                                </span>
+
+                                <input
+                                    type="password"
+                                    class="form-control"
+                                    id="password"
+                                    name="password"
+                                    placeholder="Enter Password"
+                                    required>
+
+                                <button
+                                    class="btn btn-outline-secondary"
+                                    type="button"
+                                    onclick="togglePassword()">
+
+                                    <i class="bi bi-eye-fill" id="eyeIcon"></i>
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                        <!-- Login Button -->
+
+                        <div class="d-grid">
+
+                            <button class="btn btn-success btn-lg rounded-pill">
+
+                                <i class="bi bi-box-arrow-in-right"></i>
+
+                                Login
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+                <!-- Footer -->
+
+                <div class="card-footer bg-white text-center py-3">
+
+                    <small class="text-muted">
+                        Sacred Heart College, Tirupattur
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock content %}
+
+{% block scripts %}
+
+<script>
+
+function togglePassword(){
+
+    var password = document.getElementById("password");
+    var eye = document.getElementById("eyeIcon");
+
+    if(password.type === "password"){
+
+        password.type = "text";
+        eye.className = "bi bi-eye-slash-fill";
+
+    }else{
+
+        password.type = "password";
+        eye.className = "bi bi-eye-fill";
+
+    }
+
+}
+
+</script>
+
+{% endblock scripts %}

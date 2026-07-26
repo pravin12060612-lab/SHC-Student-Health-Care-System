@@ -1,0 +1,446 @@
+{% extends "Nurse/index.html" %}
+
+{% block title %}
+Chronic Illness
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+
+            <h2 class="fw-bold text-danger mb-1">
+                Chronic Illness Follow-up
+            </h2>
+
+            <p class="text-muted mb-0">
+                Monitor students requiring follow-up treatment.
+            </p>
+
+        </div>
+
+    </div>
+
+    <!-- Summary Cards -->
+
+    <div class="row g-3 mb-4">
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body text-center">
+
+                    <h6 class="text-muted">
+                        Total Patients
+                    </h6>
+
+                    <h2 class="text-primary">
+                        {{ total_patients }}
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body text-center">
+
+                    <h6 class="text-muted">
+                        Upcoming
+                    </h6>
+
+                    <h2 class="text-success">
+                        {{ upcoming }}
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body text-center">
+
+                    <h6 class="text-muted">
+                        Due Today
+                    </h6>
+
+                    <h2 class="text-warning">
+                        {{ due_today }}
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body text-center">
+
+                    <h6 class="text-muted">
+                        Overdue
+                    </h6>
+
+                    <h2 class="text-danger">
+                        {{ overdue }}
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Search -->
+
+    <div class="card shadow-sm mb-4">
+
+        <div class="card-body">
+
+            <form method="GET">
+
+                <div class="row">
+
+                    <div class="col-md-10">
+
+                        <input
+                            type="text"
+                            name="search"
+                            class="form-control"
+                            placeholder="Search by Register Number or Student Name"
+                            value="{{ search }}">
+
+                    </div>
+
+                    <div class="col-md-2 d-grid">
+
+                        <button class="btn btn-danger">
+
+                            Search
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+    {% if visits %}
+
+{% for visit in visits %}
+
+<div class="card shadow-sm border-0 mb-4">
+
+    <!-- Card Header -->
+
+    <div class="card-header bg-danger text-white">
+
+        <div class="d-flex justify-content-between align-items-center">
+
+            <div>
+
+                <h5 class="mb-0">
+
+                    {{ visit.student_name }}
+
+                </h5>
+
+                <small>
+
+                    Register No : {{ visit.reg_no }}
+
+                </small>
+
+            </div>
+
+            <div>
+
+                {% if visit.status == "Upcoming" %}
+
+                    <span class="badge bg-success fs-6">
+
+                        Upcoming
+
+                    </span>
+
+                {% elif visit.status == "Today" %}
+
+                    <span class="badge bg-warning text-dark fs-6">
+
+                        Due Today
+
+                    </span>
+
+                {% elif visit.status == "Overdue" %}
+
+                    <span class="badge bg-danger fs-6">
+
+                        Overdue
+
+                    </span>
+
+                {% else %}
+
+                    <span class="badge bg-secondary fs-6">
+
+                        No Follow-up
+
+                    </span>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Card Body -->
+
+    <div class="card-body">
+
+        <div class="row">
+
+            <div class="col-md-4 mb-3">
+
+                <label class="fw-bold text-secondary">
+
+                    Department
+
+                </label>
+
+                <div class="form-control bg-light">
+
+                    {{ visit.department }}
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-4 mb-3">
+
+                <label class="fw-bold text-secondary">
+
+                    Blood Group
+
+                </label>
+
+                <div class="form-control bg-light">
+
+                    {{ visit.blood_group }}
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-4 mb-3">
+
+                <label class="fw-bold text-secondary">
+
+                    Last Visit
+
+                </label>
+
+                <div class="form-control bg-light">
+
+                    {{ visit.date }}
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-6 mb-3">
+
+                <label class="fw-bold text-secondary">
+
+                    Problem
+
+                </label>
+
+                <div class="form-control bg-light">
+
+                    {{ visit.problem }}
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-6 mb-3">
+
+                <label class="fw-bold text-secondary">
+
+                    Medicine
+
+                </label>
+
+                <div class="form-control bg-light">
+
+                    {{ visit.medicine }}
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-6 mb-3">
+
+                <label class="fw-bold text-secondary">
+
+                    Next Check-up
+
+                </label>
+
+                <div class="form-control bg-light">
+
+                    {% if visit.next_checkup %}
+
+                        {{ visit.next_checkup }}
+
+                    {% else %}
+
+                        --
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-6 mb-3">
+
+                <label class="fw-bold text-secondary">
+
+                    Status
+
+                </label>
+
+                <div class="form-control bg-light">
+
+                    {{ visit.message }}
+
+                </div>
+
+            </div>
+                        <!-- Update Form -->
+
+            <form method="POST" action="{% url 'chronic_illness' %}">
+
+                {% csrf_token %}
+
+                <input
+                    type="hidden"
+                    name="visit_id"
+                    value="{{ visit.visit_id }}">
+
+                <div class="col-md-6 mb-3">
+
+                    <label class="fw-bold text-secondary">
+
+                        Follow-up Days
+
+                    </label>
+
+                    <input
+                        type="number"
+                        class="form-control"
+                        name="follow_up_days"
+                        value="{{ visit.follow_up_days }}"
+                        min="0">
+
+                </div>
+
+                <div class="col-12 mb-3">
+
+                    <label class="fw-bold text-secondary">
+
+                        Remarks
+
+                    </label>
+
+                    <textarea
+                        class="form-control"
+                        name="remarks"
+                        rows="3">{{ visit.remarks }}</textarea>
+
+                </div>
+
+                <div class="col-12 text-end">
+
+                    <button
+                        type="submit"
+                        class="btn btn-success">
+
+                        <i class="bi bi-save"></i>
+
+                        Update Follow-up
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endfor %}
+
+{% else %}
+
+<div class="card shadow-sm">
+
+    <div class="card-body text-center py-5">
+
+        <h4 class="text-muted">
+
+            No Chronic Illness Records Found
+
+        </h4>
+
+        <p class="text-secondary mb-0">
+
+            There are currently no students requiring chronic illness follow-up.
+
+        </p>
+
+    </div>
+
+</div>
+
+{% endif %}
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,118 @@
+{% extends "Student/index.html" %}
+
+{% block title %}
+Medical Visit
+{% endblock %}
+
+{% block content %}
+
+<div class="card border-0 shadow-sm">
+
+    <div class="card-header bg-primary text-white">
+
+        <h4 class="mb-0">
+
+            <i class="bi bi-heart-pulse me-2"></i>
+
+            Medical Visit History
+
+        </h4>
+
+    </div>
+
+    <div class="card-body">
+
+        {% if visits %}
+
+        <div class="table-responsive">
+
+            <table class="table table-bordered table-hover align-middle">
+
+<thead class="table-primary">
+    <tr>
+        <th>S.No</th>
+        <th>Date</th>
+        <th>Problem</th>
+        <th>Medicine</th>
+        <th>Staff</th>
+        <th>Chronic Illness</th>
+        <th>Status</th>
+    </tr>
+</thead>
+
+                <tbody>
+
+{% for visit in visits %}
+
+<tr>
+
+    <td>{{ forloop.counter }}</td>
+
+    <td>
+        {{ visit.date }}<br>
+        <small class="text-muted">{{ visit.time }}</small>
+    </td>
+
+    <td>{{ visit.problem }}</td>
+
+    <td>{{ visit.medicine }}</td>
+
+    <td>{{ visit.staff_name }}</td>
+
+    <td>
+        {% if visit.chronic_illness %}
+            <span class="badge bg-danger">Yes</span>
+        {% else %}
+            <span class="badge bg-success">No</span>
+        {% endif %}
+    </td>
+
+    <td>
+        <span class="badge bg-primary">Completed</span>
+    </td>
+
+</tr>
+
+{% empty %}
+
+<tr>
+    <td colspan="7" class="text-center text-muted py-4">
+        No medical visit records found.
+    </td>
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+            </table>
+
+        </div>
+
+        {% else %}
+
+        <div class="text-center py-5">
+
+            <i class="bi bi-heart-pulse display-1 text-primary"></i>
+
+            <h4 class="mt-3">
+
+                No Medical Visits Found
+
+            </h4>
+
+            <p class="text-muted mb-0">
+
+                You haven't visited the health centre yet.
+
+            </p>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

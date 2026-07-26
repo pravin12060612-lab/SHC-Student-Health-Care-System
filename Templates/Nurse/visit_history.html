@@ -1,0 +1,122 @@
+{% extends "Nurse/index.html" %}
+{% block content %}
+
+<div class="container mt-4">
+
+    <h3 class="mb-4">
+        Student Visit History
+    </h3>
+
+    <form method="GET" class="row g-3 mb-4">
+
+        <div class="col-md-3">
+            <input
+                type="date"
+                name="date"
+                class="form-control"
+                value="{{ selected_date }}">
+        </div>
+
+        <div class="col-md-3">
+            <select name="problem" class="form-select">
+
+                <option value="">All Problems</option>
+
+                {% for value,label in problems %}
+
+                <option value="{{ value }}"
+                    {% if selected_problem == value %}selected{% endif %}>
+                    {{ label }}
+                </option>
+
+                {% endfor %}
+
+            </select>
+        </div>
+
+        <div class="col-md-3">
+            <input
+                type="text"
+                name="reg_no"
+                class="form-control"
+                placeholder="Register Number"
+                value="{{ reg_no }}">
+        </div>
+
+        <div class="col-md-3 d-grid">
+            <button class="btn btn-primary">
+                Search
+            </button>
+        </div>
+
+    </form>
+
+    <table class="table table-bordered table-hover align-middle">
+
+        <thead class="table-dark">
+
+            <tr>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Reg No</th>
+                <th>Student</th>
+                <th>Department</th>
+                <th>Problem</th>
+                <th>Medicine</th>
+                <th>Staff</th>
+                <th>Chronic</th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            {% for visit in visits %}
+
+            <tr>
+
+                <td>{{ visit.date }}</td>
+
+                <td>{{ visit.time|time:"h:i A" }}</td>
+
+                <td>{{ visit.reg_no }}</td>
+
+                <td>{{ visit.student_name }}</td>
+
+                <td>{{ visit.department }}</td>
+
+                <td>{{ visit.problem }}</td>
+
+                <td>{{ visit.medicine }}</td>
+
+                <td>{{ visit.staff_name }}</td>
+
+                <td>
+                    {% if visit.chronic_illness == "Yes" %}
+                        <span class="badge bg-danger">Yes</span>
+                    {% else %}
+                        <span class="badge bg-success">No</span>
+                    {% endif %}
+                </td>
+
+            </tr>
+
+            {% empty %}
+
+            <tr>
+
+                <td colspan="9" class="text-center text-muted">
+                    No visit records found.
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,446 @@
+{% extends "Account/index.html" %}
+{% load static %}
+
+{% block title %}
+About Us
+{% endblock %}
+
+{% block content %}
+
+<!-- Page Heading -->
+
+<div class="text-center mb-5">
+
+    <h1 class="fw-bold text-primary">
+        About Student Health Care Centre
+    </h1>
+
+    <p class="text-muted">
+        Caring for Students • Promoting Wellness • Building a Healthy Campus
+    </p>
+
+</div>
+<!-- Nurse Profile -->
+
+<div class="card border-0 shadow mb-5">
+
+    <div class="row g-0 align-items-center">
+
+        <div class="col-lg-4 text-center p-4">
+
+            <img src="{% static 'images/nurse.jpg' %}"
+                 class="img-fluid rounded-circle shadow"
+                 style="width:220px;height:220px;object-fit:cover;">
+
+        </div>
+
+        <div class="col-lg-8">
+
+            <div class="card-body">
+
+                <h2 class="fw-bold text-primary">
+
+                    Meet Our College Nurse
+
+                </h2>
+
+                <h3 class="text-secondary">
+
+                    {{ nurse.name }}, {{ nurse.qualification }}
+
+                </h3>
+
+                <hr>
+
+                <div class="row">
+
+                    <div class="col-md-6">
+
+                        <p>
+                            <strong>Nurse ID :</strong>
+                            {{ nurse.nurse_id }}
+                        </p>
+
+                        <p>
+                            <strong>Designation :</strong>
+                            College Staff Nurse
+                        </p>
+
+                        <p>
+                            <strong>Qualification :</strong>
+                            {{ nurse.qualification }}
+                        </p>
+
+                        <p>
+                            <strong>Registration :</strong>
+                            Tamil Nadu Nurses and Midwives Council
+                        </p>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <p>
+                            <strong>Phone :</strong>
+                            {{ nurse.phone }}
+                        </p>
+
+                        <p>
+                            <strong>Experience :</strong>
+                            15+ Years in Clinical & Student Healthcare
+                        </p>
+
+                        <p>
+                            <strong>Specialization :</strong>
+                            First Aid, Emergency Care & Student Health
+                        </p>
+
+                        <p>
+                            <strong>Working Hours :</strong>
+                            Monday – Friday (9:00 AM – 4:30 PM
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <p class="mt-3">
+
+                    {{ nurse.name }} serves as the College Staff Nurse at
+                    Sacred Heart College (Autonomous), Tirupattur. She is
+                    responsible for providing first aid, emergency medical
+                    assistance, health counselling, routine health check-ups,
+                    medicine distribution, and maintaining student medical
+                    records. She also coordinates health awareness programmes,
+                    supports students with chronic medical conditions, and
+                    works closely with faculty to promote a safe and healthy
+                    campus environment.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<!-- About Health Centre -->
+
+<div class="row align-items-center mb-5">
+
+    <div class="col-lg-6">
+
+        <img src="{% static 'images/about.jpg' %}"
+             class="img-fluid rounded shadow">
+
+    </div>
+
+    <div class="col-lg-6">
+
+        <h2 class="fw-bold text-primary">
+
+            About the Health Centre
+
+        </h2>
+
+        <p class="mt-3">
+
+            The Student Health Care Centre at Sacred Heart College
+            (Autonomous), Tirupattur provides comprehensive healthcare
+            services for students and staff. The centre is equipped to
+            handle first aid, general health consultations, medicine
+            distribution, emergency care, and health awareness programs.
+
+        </p>
+
+        <p>
+
+            The SHC Student Health Care System is developed using Django
+            and MySQL to digitize student medical records, manage medicine
+            inventory, monitor chronic illnesses, and improve healthcare
+            administration through a secure and user-friendly platform.
+
+        </p>
+
+    </div>
+
+</div>
+
+<!-- Mission & Vision -->
+
+<div class="row g-4 mb-5">
+
+    <div class="col-md-6">
+
+        <div class="card border-0 shadow h-100">
+
+            <div class="card-body">
+
+                <h3 class="text-primary">
+
+                    <i class="bi bi-bullseye"></i>
+
+                    Mission
+
+                </h3>
+
+                <p class="mt-3">
+
+                    To provide quality healthcare services that promote
+                    physical, mental, and emotional well-being through
+                    compassionate care, timely medical assistance, and
+                    modern healthcare management.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-6">
+
+        <div class="card border-0 shadow h-100">
+
+            <div class="card-body">
+
+                <h3 class="text-success">
+
+                    <i class="bi bi-eye-fill"></i>
+
+                    Vision
+
+                </h3>
+
+                <p class="mt-3">
+
+                    To create a healthy campus by ensuring accessible,
+                    efficient, and technology-driven healthcare services
+                    for every student.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Objectives -->
+
+<h2 class="text-center fw-bold text-primary mb-4">
+
+    Our Objectives
+
+</h2>
+
+<div class="row g-4 mb-5">
+
+    <div class="col-md-3">
+
+        <div class="card shadow border-0 h-100 text-center">
+
+            <div class="card-body">
+
+                <i class="bi bi-heart-pulse-fill display-4 text-danger"></i>
+
+                <h5 class="mt-3">
+
+                    First Aid
+
+                </h5>
+
+                <p>
+
+                    Immediate medical assistance for students.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-3">
+
+        <div class="card shadow border-0 h-100 text-center">
+
+            <div class="card-body">
+
+                <i class="bi bi-file-earmark-medical display-4 text-primary"></i>
+
+                <h5 class="mt-3">
+
+                    Digital Records
+
+                </h5>
+
+                <p>
+
+                    Maintain secure electronic medical records.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-3">
+
+        <div class="card shadow border-0 h-100 text-center">
+
+            <div class="card-body">
+
+                <i class="bi bi-capsule-pill display-4 text-success"></i>
+
+                <h5 class="mt-3">
+
+                    Medicine Supply
+
+                </h5>
+
+                <p>
+
+                    Provide medicines safely and efficiently.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-3">
+
+        <div class="card shadow border-0 h-100 text-center">
+
+            <div class="card-body">
+
+                <i class="bi bi-people-fill display-4 text-warning"></i>
+
+                <h5 class="mt-3">
+
+                    Health Awareness
+
+                </h5>
+
+                <p>
+
+                    Promote healthy lifestyles among students.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Facilities -->
+
+<div class="card border-0 shadow mb-5">
+
+    <div class="card-body">
+
+        <h2 class="text-center fw-bold text-primary mb-4">
+
+            Facilities Available
+
+        </h2>
+
+        <div class="row">
+
+            <div class="col-md-6">
+
+                <ul class="list-group list-group-flush">
+
+                    <li class="list-group-item">
+                        <i class="bi bi-check-circle-fill text-success"></i>
+                        First Aid Services
+                    </li>
+
+                    <li class="list-group-item">
+                        <i class="bi bi-check-circle-fill text-success"></i>
+                        General Health Check-up
+                    </li>
+
+                    <li class="list-group-item">
+                        <i class="bi bi-check-circle-fill text-success"></i>
+                        Emergency Care
+                    </li>
+
+                    <li class="list-group-item">
+                        <i class="bi bi-check-circle-fill text-success"></i>
+                        Medicine Distribution
+                    </li>
+
+                </ul>
+
+            </div>
+
+            <div class="col-md-6">
+
+                <ul class="list-group list-group-flush">
+
+                    <li class="list-group-item">
+                        <i class="bi bi-check-circle-fill text-success"></i>
+                        Digital Medical Records
+                    </li>
+
+                    <li class="list-group-item">
+                        <i class="bi bi-check-circle-fill text-success"></i>
+                        Chronic Illness Monitoring
+                    </li>
+
+                    <li class="list-group-item">
+                        <i class="bi bi-check-circle-fill text-success"></i>
+                        Health Counselling
+                    </li>
+
+                    <li class="list-group-item">
+                        <i class="bi bi-check-circle-fill text-success"></i>
+                        Health Awareness Programs
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Quote -->
+
+<div class="bg-primary text-white rounded shadow p-5 text-center">
+
+    <i class="bi bi-heart-pulse-fill display-3"></i>
+
+    <h3 class="fw-bold mt-3">
+
+        "Healthy Students Build a Stronger Future."
+
+    </h3>
+
+    <p class="mt-3 mb-0">
+
+        Student Health Care Centre<br>
+        Sacred Heart College (Autonomous), Tirupattur
+
+    </p>
+
+</div>
+
+{% endblock %}

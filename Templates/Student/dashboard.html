@@ -1,0 +1,112 @@
+{% extends "Student/index.html" %}
+{% load static %}
+{% block title %}
+Student Dashboard
+{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+
+    <div class="col-lg-8">
+
+        <div class="card border-0 shadow">
+
+            <div class="card-header bg-primary text-white py-3">
+
+                <h4 class="mb-0">
+                    <i class="bi bi-person-circle me-2"></i>
+                    Student Profile
+                </h4>
+
+            </div>
+
+            <div class="card-body">
+
+                <div class="row align-items-center">
+
+                    <!-- Profile Image -->
+
+                    <div class="col-md-4 text-center mb-4 mb-md-0">
+
+                        <img src="{% static 'images/student.png' %}"
+                             class="img-fluid rounded-circle border border-3 border-primary"
+                             width="180"
+                             alt="Student">
+
+                    </div>
+
+                    <!-- Student Details -->
+
+                    <div class="col-md-8">
+
+                        <table class="table table-borderless mb-0">
+
+                            <tr>
+                                <th width="35%">Name</th>
+                                <td>: {{ student.name }}</td>
+                            </tr>
+
+                            <tr>
+                                <th>Register Number</th>
+                                <td>: {{ student.reg_no }}</td>
+                            </tr>
+
+                            <tr>
+                                <th>Department</th>
+                                <td>: {{ student.department }}</td>
+                            </tr>
+
+                            <tr>
+                                <th>Year</th>
+                                <td>: {{ student.year }}</td>
+                            </tr>
+
+                            <tr>
+                                <th>Gender</th>
+                                <td>: {{ student.gender }}</td>
+                            </tr>
+
+                            <tr>
+                                <th>Date of Birth</th>
+                                <td>: {{ student.dob }}</td>
+                            </tr>
+
+                            <tr>
+                                <th>Blood Group</th>
+                                <td>: {{ student.blood_group }}</td>
+                            </tr>
+
+                            <tr>
+                                <th>Phone</th>
+                                <td>: {{ student.phone }}</td>
+                            </tr>
+
+                            <tr>
+                                <th>Email</th>
+                                <td>: {{ student.email }}</td>
+                            </tr>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="card-footer bg-light text-center">
+
+                <small class="text-muted">
+                    Student Health Care System • Sacred Heart College (Autonomous)
+                </small>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

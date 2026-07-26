@@ -1,0 +1,139 @@
+{% extends "Nurse/index.html" %}
+{% block content %}
+
+<div class="container mt-4">
+
+    <h3 class="mb-4">
+        Medicine Inventory
+    </h3>
+
+    <div class="row mb-4">
+
+        <div class="col-md-6">
+
+            <div class="card border-primary shadow-sm">
+
+                <div class="card-body">
+
+                    <h6>Total Medicines</h6>
+
+                    <h3>{{ total_medicines }}</h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-6">
+
+            <div class="card border-success shadow-sm">
+
+                <div class="card-body">
+
+                    <h6>Total Stock</h6>
+
+                    <h3>{{ total_stock }}</h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <form method="GET" class="mb-3">
+
+        <div class="input-group">
+
+            <input
+                type="text"
+                class="form-control"
+                name="search"
+                placeholder="Search Medicine..."
+                value="{{ search }}">
+
+            <button class="btn btn-primary">
+                Search
+            </button>
+
+        </div>
+
+    </form>
+
+    <table class="table table-bordered table-hover align-middle">
+
+        <thead class="table-dark">
+
+            <tr>
+
+                <th>#</th>
+                <th>Medicine</th>
+                <th>Available Stock</th>
+                <th>Expiry Date</th>
+                <th>Status</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            {% for medicine in medicines %}
+
+            <tr>
+
+                <td>{{ forloop.counter }}</td>
+
+                <td>{{ medicine.medicine_name }}</td>
+
+                <td>{{ medicine.quantity }}</td>
+
+                <td>{{ medicine.expiry_date }}</td>
+
+                <td>
+
+                    {% if medicine.quantity == 0 %}
+
+                        <span class="badge bg-danger">
+                            Out of Stock
+                        </span>
+
+                    {% elif medicine.quantity <= 20 %}
+
+                        <span class="badge bg-warning text-dark">
+                            Low Stock
+                        </span>
+
+                    {% else %}
+
+                        <span class="badge bg-success">
+                            In Stock
+                        </span>
+
+                    {% endif %}
+
+                </td>
+
+            </tr>
+
+            {% empty %}
+
+            <tr>
+
+                <td colspan="5" class="text-center">
+                    No medicines found.
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}

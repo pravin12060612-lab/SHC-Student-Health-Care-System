@@ -1,0 +1,272 @@
+{% extends 'Account/index.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <!-- Page Header -->
+
+    <div class="text-center mb-5">
+
+        <h1 class="fw-bold text-primary">
+
+            Contact Us
+
+        </h1>
+
+        <p class="lead text-muted">
+
+            Get in touch with the Student Health Care Centre. We are always here
+            to support the health and well-being of our students.
+
+        </p>
+
+    </div>
+
+    <div class="row g-4">
+
+        <!-- Contact Information -->
+
+        <div class="col-lg-5">
+
+            <div class="card border-0 shadow h-100">
+
+                <div class="card-body p-4">
+
+                    <h3 class="text-primary mb-4">
+
+                        Contact Information
+
+                    </h3>
+
+                    <p>
+
+                        <strong>🏫 College</strong><br>
+                        Sacred Heart College (Autonomous)
+
+                    </p>
+
+                    <p>
+
+                        <strong>📍 Address</strong><br>
+                        Tirupattur, Tamil Nadu – 635601
+
+                    </p>
+
+                    <p>
+
+                        <strong>📞 Phone</strong><br>
+                        +91 98765 43210
+
+                    </p>
+
+                    <p>
+
+                        <strong>✉ Email</strong><br>
+                        shc@shctpt.edu
+
+                    </p>
+
+                    <p>
+
+                        <strong>🌐 Website</strong><br>
+                        www.shctpt.edu
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Contact Form -->
+
+        <div class="col-lg-7">
+
+            <div class="card border-0 shadow">
+
+                <div class="card-body p-4">
+
+                    <h3 class="text-primary mb-4">
+
+                        Send Us a Message
+
+                    </h3>
+
+                    <form method="post">
+
+                        {% csrf_token %}
+
+                        <div class="row">
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label">
+
+                                    Full Name
+
+                                </label>
+
+                                <input type="text"
+                                       class="form-control"
+                                       placeholder="Enter your name">
+
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label">
+
+                                    Email Address
+
+                                </label>
+
+                                <input type="email"
+                                       class="form-control"
+                                       placeholder="Enter your email">
+
+                            </div>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+
+                                Subject
+
+                            </label>
+
+                            <input type="text"
+                                   class="form-control"
+                                   placeholder="Enter subject">
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+
+                                Message
+
+                            </label>
+
+                            <textarea class="form-control"
+                                      rows="5"
+                                      placeholder="Write your message here"></textarea>
+
+                        </div>
+
+                        <button class="btn btn-primary px-4">
+
+                            Send Message
+
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Office Hours -->
+
+    <div class="card border-0 shadow mt-5">
+
+        <div class="card-body p-4">
+
+            <h3 class="text-primary mb-4 text-center">
+
+                Office Hours
+
+            </h3>
+
+            <div class="row text-center">
+
+                <div class="col-md-4 mb-3">
+
+                    <h5>Monday - Friday</h5>
+
+                    <p>9:00 AM - 4:30 PM</p>
+
+                </div>
+
+                <div class="col-md-4 mb-3">
+
+                    <h5>Saturday</h5>
+
+                    <p>9:00 AM - 12:30 PM</p>
+
+                </div>
+
+                <div class="col-md-4 mb-3">
+
+                    <h5>Sunday</h5>
+
+                    <p>Closed</p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Health Centre Services -->
+
+    <div class="card border-0 shadow mt-5">
+
+        <div class="card-body p-4">
+
+            <h3 class="text-primary text-center mb-4">
+
+                Student Health Care Services
+
+            </h3>
+
+            <div class="row">
+
+                <div class="col-md-6">
+
+                    <ul class="list-group list-group-flush">
+
+                        <li class="list-group-item">First Aid & Emergency Care</li>
+
+                        <li class="list-group-item">Health Consultation</li>
+
+                        <li class="list-group-item">Medicine Distribution</li>
+
+                    </ul>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <ul class="list-group list-group-flush">
+
+                        <li class="list-group-item">Health Awareness Programmes</li>
+
+                        <li class="list-group-item">Medical Guidance</li>
+
+                        <li class="list-group-item">Student Wellness Support</li>
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

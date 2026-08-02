@@ -31,14 +31,16 @@ Staff Dashboard
 
                     <!-- Profile Image -->
 
-                    <div class="col-md-4 text-center mb-4 mb-md-0">
+   <div class="col-md-4 text-start">
 
-                        <img src="{% static 'images/staff.png' %}"
-                             class="img-fluid rounded-circle border border-3 border-success shadow"
-                             style="width:180px;height:180px;object-fit:cover;">
+    <div class="rounded-circle bg-primary text-white d-inline-flex justify-content-center align-items-center shadow"
+         style="width:180px;height:180px;">
 
-                    </div>
+        <i class="bi bi-person-fill" style="font-size:90px;"></i>
 
+    </div>
+
+</div>
                     <!-- Staff Details -->
 
                     <div class="col-md-8">
@@ -65,10 +67,6 @@ Staff Dashboard
                                 <td>: {{ staff.designation }}</td>
                             </tr>
 
-                            <tr>
-                                <th>Gender</th>
-                                <td>: {{ staff.gender }}</td>
-                            </tr>
 
                             <tr>
                                 <th>Phone</th>

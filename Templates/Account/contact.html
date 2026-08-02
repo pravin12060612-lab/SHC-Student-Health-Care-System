@@ -97,76 +97,91 @@
 
                     <form method="post">
 
-                        {% csrf_token %}
+    {% csrf_token %}
 
-                        <div class="row">
+    <div class="row">
 
-                            <div class="col-md-6 mb-3">
+        <div class="col-md-6 mb-3">
 
-                                <label class="form-label">
+            <label class="form-label">
+                Full Name
+            </label>
 
-                                    Full Name
+            <input type="text"
+                   name="name"
+                   class="form-control"
+                   placeholder="Enter your name"
+                   required>
 
-                                </label>
+        </div>
 
-                                <input type="text"
-                                       class="form-control"
-                                       placeholder="Enter your name">
+        <div class="col-md-6 mb-3">
 
-                            </div>
+            <label class="form-label">
+                Email Address
+            </label>
 
-                            <div class="col-md-6 mb-3">
+            <input type="email"
+                   name="email"
+                   class="form-control"
+                   placeholder="Enter your email"
+                   required>
 
-                                <label class="form-label">
+        </div>
 
-                                    Email Address
+    </div>
 
-                                </label>
+    <div class="mb-3">
 
-                                <input type="email"
-                                       class="form-control"
-                                       placeholder="Enter your email">
+        <label class="form-label">
+            Phone Number
+        </label>
 
-                            </div>
+        <input type="text"
+               name="phone"
+               class="form-control"
+               placeholder="Enter your phone number"
+               required>
 
-                        </div>
+    </div>
 
-                        <div class="mb-3">
+    <div class="mb-3">
 
-                            <label class="form-label">
+        <label class="form-label">
+            Issue
+        </label>
 
-                                Subject
+        <input type="text"
+               name="issue"
+               class="form-control"
+               placeholder="Enter your issue"
+               required>
 
-                            </label>
+    </div>
 
-                            <input type="text"
-                                   class="form-control"
-                                   placeholder="Enter subject">
+    <div class="mb-3">
 
-                        </div>
+        <label class="form-label">
+            Message
+        </label>
 
-                        <div class="mb-3">
+        <textarea name="message"
+                  class="form-control"
+                  rows="5"
+                  placeholder="Write your message here"
+                  required></textarea>
 
-                            <label class="form-label">
+    </div>
 
-                                Message
+    <button type="submit" class="btn btn-primary px-4">
 
-                            </label>
+        <i class="bi bi-send-fill me-2"></i>
 
-                            <textarea class="form-control"
-                                      rows="5"
-                                      placeholder="Write your message here"></textarea>
+        Send Message
 
-                        </div>
+    </button>
 
-                        <button class="btn btn-primary px-4">
-
-                            Send Message
-
-                        </button>
-
-                    </form>
-
+</form>
                 </div>
 
             </div>

@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.hashers import check_password
-from .models import Student,Staff,Nurse
+from .models import Student,Staff,Nurse,ContactInfo
 def home(request):
     return render(request, "Account/home.html")
 def about(request):
@@ -133,3 +133,28 @@ def nurse_login_validate(request):
             return redirect("nurse_login")
 
     return redirect("nurse_login")
+
+def contact(request):
+
+    if request.method == "POST":
+
+        ContactInfo.objects.create(
+
+            name=request.POST.get("name"),
+
+            email=request.POST.get("email"),
+
+            phone=request.POST.get("phone"),
+
+            issue=request.POST.get("issue"),
+
+            message=request.POST.get("message")
+
+        )
+
+        return redirect("home")
+
+    return render(
+        request,
+        "Account/contact.html"
+    )

@@ -33,7 +33,7 @@ class Student(models.Model):
             self.password = make_password(self.password)
 
         super().save(*args, **kwargs)
-
+    email = models.EmailField(max_length=100,unique=True,null=True,blank=True)
     name = models.CharField(max_length=100)
     department = models.CharField(max_length=100,choices=DEPARTMENT_CHOICES)
     Year = models.IntegerField()
@@ -50,15 +50,15 @@ class Student(models.Model):
 class Staff(models.Model):
     staff_id = models.CharField(max_length=20, primary_key=True,unique=True)
     password = models.CharField(max_length=255)
+    email = models.EmailField(max_length=100,unique=True,null=True,blank=True)
     def save(self, *args, **kwargs):
         if not self.password.startswith("pbkdf2_"):
             self.password = make_password(self.password)
         super().save(*args, **kwargs)
-
+    designation = models.CharField(max_length=100)
     name = models.CharField(max_length=100)
     department = models.CharField(max_length=100,choices=Student.DEPARTMENT_CHOICES)
     phone = models.CharField(max_length=15, validators=[ph],unique=True)
-
     def __str__(self):
         return self.name
 
@@ -128,3 +128,19 @@ class MedicineInventory(models.Model):
 
     def __str__(self):
         return f"{self.medicine_name} (Stock: {self.quantity})"
+
+class ContactInfo(models.Model):
+
+    name = models.CharField(max_length=100)
+
+    email = models.EmailField(unique=True)
+
+    phone = models.CharField(max_length=15)
+
+    issue = models.CharField(max_length=200)
+
+    message = models.TextField()
+
+    def __str__(self):
+
+        return self.name

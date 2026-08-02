@@ -9,5 +9,6 @@ urlpatterns = [
     path("chronic-illness/",views.chronic_illness,name="chronic_illness"),
     path("inventory_request/",views.inventory_request,name="inventory_request"),
     path("download-inventory-pdf/",views.download_inventory_pdf,name="download_inventory_pdf"),
-    path("/logout/",views.nurse_logout,name="nurse_logout"),
+    path("contact-enquiries/",views.contact_enquiries,name="contact_enquiries"),
+    path("logout/",views.nurse_logout,name="nurse_logout"),
 ]

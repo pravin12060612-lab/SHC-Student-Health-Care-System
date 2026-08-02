@@ -1,8 +1,9 @@
+from django.core.checks import messages
 from django.http import request
 from django.shortcuts import render
 from datetime import timedelta
 from django.utils import timezone
-
+from django.contrib import messages
 # Create your views here.
 from django.shortcuts import render, redirect
 from Account.models import Student,StudentVisit
@@ -75,6 +76,9 @@ def notice(request):
     })
 def student_logout(request):
 
-    request.session.flush()
+    storage = messages.get_messages(request)
+
+    for _ in storage:
+        pass
 
     return redirect("home")

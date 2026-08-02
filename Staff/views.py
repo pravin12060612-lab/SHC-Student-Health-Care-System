@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.shortcuts import render, redirect
 from Account.models import Staff
 
@@ -57,6 +58,9 @@ def emergency_notice(request):
     })
 def staff_logout(request):
 
-    request.session.flush()
+    storage = messages.get_messages(request)
 
-    return redirect("staff_login")
+    for _ in storage:
+        pass
+
+    return redirect("home")

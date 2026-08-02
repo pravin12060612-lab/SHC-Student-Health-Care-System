@@ -27,14 +27,16 @@ Student Dashboard
 
                     <!-- Profile Image -->
 
-                    <div class="col-md-4 text-center mb-4 mb-md-0">
+ <div class="col-md-4 text-start">
 
-                        <img src="{% static 'images/student.png' %}"
-                             class="img-fluid rounded-circle border border-3 border-primary"
-                             width="180"
-                             alt="Student">
+    <div class="rounded-circle bg-primary text-white d-inline-flex justify-content-center align-items-center shadow"
+         style="width:180px;height:180px;">
 
-                    </div>
+        <i class="bi bi-person-fill" style="font-size:90px;"></i>
+
+    </div>
+
+</div>
 
                     <!-- Student Details -->
 
@@ -59,7 +61,7 @@ Student Dashboard
 
                             <tr>
                                 <th>Year</th>
-                                <td>: {{ student.year }}</td>
+                                <td>: {{ student.Year }}</td>
                             </tr>
 
                             <tr>
@@ -82,10 +84,6 @@ Student Dashboard
                                 <td>: {{ student.phone }}</td>
                             </tr>
 
-                            <tr>
-                                <th>Email</th>
-                                <td>: {{ student.email }}</td>
-                            </tr>
 
                         </table>
 

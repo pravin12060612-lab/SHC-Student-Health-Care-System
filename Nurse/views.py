@@ -4,7 +4,7 @@ from django.utils import json, timezone
 from datetime import timedelta
 from django.shortcuts import render, redirect,get_object_or_404
 from django.contrib import messages
-from Account.models import Nurse,Staff,Student,StudentVisit, MedicineInventory
+from Account.models import ContactInfo, Nurse,Staff,Student,StudentVisit, MedicineInventory
 from django.http import HttpResponse
 from reportlab.lib.units import inch
 from reportlab.pdfgen import canvas
@@ -474,8 +474,24 @@ def download_inventory_pdf(request):
     pdf.save()
 
     return response
-def nurse_logout(request):
 
+def contact_enquiries(request):
+
+    enquiries = ContactInfo.objects.all().order_by("-id")
+
+    return render(
+        request,
+        "Nurse/contact_enquiries.html",
+        {
+            "enquiries": enquiries,
+            "page": "contact_enquiries"
+        }
+    )
+def nurse_logout(request):
     request.session.flush()
+    storage = messages.get_messages(request)
+
+    for _ in storage:
+        pass
 
     return redirect("home")

@@ -1,0 +1,125 @@
+{% extends "Nurse/index.html" %}
+
+{% block title %}
+
+Contact Enquiries
+
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    <div class="card shadow border-0">
+
+        <div class="card-header bg-danger text-white">
+
+            <h4 class="mb-0">
+
+                <i class="bi bi-envelope-paper me-2"></i>
+
+                Contact Enquiries
+
+            </h4>
+
+        </div>
+
+        <div class="card-body">
+
+            {% if enquiries %}
+
+            <div class="table-responsive">
+
+                <table class="table table-bordered table-hover align-middle">
+
+                    <thead class="table-danger">
+
+                        <tr>
+
+                            <th>S.No</th>
+
+                            <th>Name</th>
+
+                            <th>Email</th>
+
+                            <th>Phone</th>
+
+                            <th>Issue</th>
+
+                            <th>Message</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for enquiry in enquiries %}
+
+                        <tr>
+
+                            <td>
+
+                                {{ forloop.counter }}
+
+                            </td>
+
+                            <td>
+
+                                {{ enquiry.name }}
+
+                            </td>
+
+                            <td>
+
+                                {{ enquiry.email }}
+
+                            </td>
+
+                            <td>
+
+                                {{ enquiry.phone }}
+
+                            </td>
+
+                            <td>
+
+                                {{ enquiry.issue }}
+
+                            </td>
+
+                            <td style="white-space: pre-wrap;">
+
+                                {{ enquiry.message }}
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            {% else %}
+
+            <div class="alert alert-info text-center">
+
+                <i class="bi bi-info-circle me-2"></i>
+
+                No contact enquiries found.
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -22,6 +22,8 @@ Student Visit
 
                 {% csrf_token %}
 
+                <!-- ================= STUDENT INFORMATION ================= -->
+
                 <h5 class="text-danger mb-3">
                     Student Information
                 </h5>
@@ -30,37 +32,57 @@ Student Visit
 
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Register Number</label>
-                        <input type="text" class="form-control" value="{{ student.reg_no }}" readonly>
+                        <input type="text"
+                               class="form-control"
+                               value="{{ student.reg_no }}"
+                               readonly>
                     </div>
 
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Student Name</label>
-                        <input type="text" class="form-control" value="{{ student.name }}" readonly>
+                        <input type="text"
+                               class="form-control"
+                               value="{{ student.name }}"
+                               readonly>
                     </div>
 
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Department</label>
-                        <input type="text" class="form-control" value="{{ student.department }}" readonly>
+                        <input type="text"
+                               class="form-control"
+                               value="{{ student.department }}"
+                               readonly>
                     </div>
 
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Year</label>
-                        <input type="text" class="form-control" value="{{ student.Year }}" readonly>
+                        <input type="text"
+                               class="form-control"
+                               value="{{ student.Year }}"
+                               readonly>
                     </div>
 
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Blood Group</label>
-                        <input type="text" class="form-control" value="{{ student.blood_group }}" readonly>
+                        <input type="text"
+                               class="form-control"
+                               value="{{ student.blood_group }}"
+                               readonly>
                     </div>
 
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Phone</label>
-                        <input type="text" class="form-control" value="{{ student.phone }}" readonly>
+                        <input type="text"
+                               class="form-control"
+                               value="{{ student.phone }}"
+                               readonly>
                     </div>
 
                 </div>
 
                 <hr>
+
+                <!-- ================= VISIT DETAILS ================= -->
 
                 <h5 class="text-danger mb-3">
                     Visit Details
@@ -76,65 +98,107 @@ Student Visit
                             Problem
                         </label>
 
-                        <select class="form-select" name="problem" required>
-
-    <option value="">Select Problem</option>
-
-    {% for value,label in problems %}
-
-        <option value="{{ value }}">
-            {{ label }}
-        </option>
-
-    {% endfor %}
-
-</select>
-
-                    </div>
-
-                    <!-- Medicine -->
-
-                    <div class="col-md-6 mb-3">
-
-                        <label class="form-label">
-                            Medicine Given
-                        </label>
-
-                        <select class="form-select" name="medicine" required>
+                        <select class="form-select"
+                                name="problem"
+                                required>
 
                             <option value="">
-                                Select Medicine
+                                Select Problem
                             </option>
 
-                            {% for medicine in medicines %}
-                                <option value="{{ medicine.medicine_name }}">
-                                    {{ medicine.medicine_name }}
+                            {% for value,label in problems %}
+
+                                <option value="{{ value }}">
+                                    {{ label }}
                                 </option>
+
                             {% endfor %}
 
                         </select>
 
                     </div>
-                    <!-- Dosage -->
-<div class="col-md-6 mb-3">
 
-    <label class="form-label">
-        Dosage (mg)
-    </label>
 
-    <input
-        type="text"
-        name="dosage_mg"
-        class="form-control"
-        placeholder="Example: 100mg"
-    >
+                    <!-- ================= MEDICINES ================= -->
 
-    <small class="text-muted">
-        Enter dosage in mg, e.g. 100 mg
-    </small>
+                    <div class="col-12 mb-3">
 
-</div>
-                    <!-- Staff Department -->
+                        <label class="form-label">
+                            Medicine Given
+                        </label>
+
+                        <div id="medicineContainer">
+
+                            <!-- FIRST MEDICINE ROW -->
+
+                            <div class="medicine-row row g-2 mb-2">
+
+                                <!-- Medicine -->
+
+                                <div class="col-md-5">
+
+                                    <select
+                                        class="form-select"
+                                        name="medicine[]"
+                                        required>
+
+                                        <option value="">
+                                            Select Medicine
+                                        </option>
+
+                                        {% for medicine in medicines %}
+
+                                            <option value="{{ medicine.medicine_name }}">
+                                                {{ medicine.medicine_name }}
+                                            </option>
+
+                                        {% endfor %}
+
+                                    </select>
+
+                                </div>
+
+
+                                <!-- Dosage -->
+
+                                <div class="col-md-5">
+
+                                    <input
+                                        type="text"
+                                        name="dosage[]"
+                                        class="form-control"
+                                        placeholder="Dosage (mg)"
+                                        required>
+
+                                </div>
+
+
+                                <!-- Add Button -->
+
+                                <div class="col-md-2">
+
+                                    <button
+                                        type="button"
+                                        class="btn btn-success w-100 add-medicine">
+
+                                        +
+
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <small class="text-muted">
+                            Add multiple medicines using the + button.
+                        </small>
+
+                    </div>
+
+
+                    <!-- ================= STAFF DEPARTMENT ================= -->
 
                     <div class="col-md-6 mb-3">
 
@@ -142,23 +206,30 @@ Student Visit
                             Staff Department
                         </label>
 
-                        <select class="form-select" id="department" name="department" required>
+                        <select
+                            class="form-select"
+                            id="department"
+                            name="department"
+                            required>
 
                             <option value="">
                                 Select Department
                             </option>
 
                             {% for dept in departments %}
+
                                 <option value="{{ dept.department }}">
                                     {{ dept.department }}
                                 </option>
+
                             {% endfor %}
 
                         </select>
 
                     </div>
 
-                    <!-- Staff Name -->
+
+                    <!-- ================= STAFF NAME ================= -->
 
                     <div class="col-md-6 mb-3">
 
@@ -166,23 +237,34 @@ Student Visit
                             Staff Name
                         </label>
 
-                        <select class="form-select" id="staff_name" name="staff_name" required>
+                        <select
+                            class="form-select"
+                            id="staff_name"
+                            name="staff_name"
+                            required>
 
                             <option value="">
                                 Select Staff
                             </option>
 
                             {% for staff in staffs %}
-                                <option value="{{ staff.name }}" data-department="{{ staff.department }}">
+
+                                <option
+                                    value="{{ staff.name }}"
+                                    data-department="{{ staff.department }}">
+
                                     {{ staff.name }}
+
                                 </option>
+
                             {% endfor %}
 
                         </select>
 
                     </div>
-                
-                    <!-- Chronic -->
+
+
+                    <!-- ================= CHRONIC ILLNESS ================= -->
 
                     <div class="col-md-6 mb-3">
 
@@ -190,32 +272,40 @@ Student Visit
                             Chronic Illness
                         </label>
 
-                        <select class="form-select" name="chronic_illness" required>
+                        <select
+                            class="form-select"
+                            name="chronic_illness"
+                            required>
 
-            <option value="">
-                    Select
-                </option>
+                            <option value="">
+                                Select
+                            </option>
 
-        {% for value, label in chronic_choices %}
+                            {% for value,label in chronic_choices %}
 
-            <option value="{{ value }}">
-                {{ label }}
-            </option>
+                                <option value="{{ value }}">
+                                    {{ label }}
+                                </option>
 
-        {% endfor %}
+                            {% endfor %}
 
-    </select>
-                <div class="col-md-6" id="nextCheckupDiv" style="display:none;">
-                <label>Next Check-up</label>
-                <input type="date" name="next_checkup" id="next_checkup" class="form-control">
-                </div>
+                        </select>
+
                     </div>
+
                 </div>
-                
+
+
+                <!-- ================= SAVE ================= -->
+
                 <div class="text-center mt-4">
 
-                    <button type="submit" class="btn btn-danger px-5">
+                    <button
+                        type="submit"
+                        class="btn btn-danger px-5">
+
                         Save Visit
+
                     </button>
 
                 </div>
@@ -228,26 +318,107 @@ Student Visit
 
 </div>
 
+
+<!-- ================= JAVASCRIPT ================= -->
+
 <script>
 
-const department = document.getElementById("department");
-const staff = document.getElementById("staff_name");
+/* =====================================================
+   ADD / REMOVE MEDICINE
+===================================================== */
 
-const options = Array.from(staff.options);
+const medicineContainer =
+    document.getElementById("medicineContainer");
 
-department.addEventListener("change", function(){
+
+medicineContainer.addEventListener("click", function(event) {
+
+    /* ADD MEDICINE */
+
+    if (event.target.classList.contains("add-medicine")) {
+
+        const firstRow =
+            document.querySelector(".medicine-row");
+
+        const newRow =
+            firstRow.cloneNode(true);
+
+        /* Clear selected medicine */
+
+        newRow.querySelector(
+            'select[name="medicine[]"]'
+        ).value = "";
+
+        /* Clear dosage */
+
+        newRow.querySelector(
+            'input[name="dosage[]"]'
+        ).value = "";
+
+
+        /* Change + button to - */
+
+        const button =
+            newRow.querySelector(".add-medicine");
+
+        button.classList.remove("btn-success");
+        button.classList.add("btn-danger");
+
+        button.classList.remove("add-medicine");
+        button.classList.add("remove-medicine");
+
+        button.innerHTML = "−";
+
+
+        medicineContainer.appendChild(newRow);
+    }
+
+
+    /* REMOVE MEDICINE */
+
+    if (event.target.classList.contains("remove-medicine")) {
+
+        const row =
+            event.target.closest(".medicine-row");
+
+        row.remove();
+
+    }
+
+});
+
+
+/* =====================================================
+   STAFF DEPARTMENT FILTER
+===================================================== */
+
+const department =
+    document.getElementById("department");
+
+const staff =
+    document.getElementById("staff_name");
+
+const options =
+    Array.from(staff.options);
+
+
+department.addEventListener("change", function() {
 
     let dept = this.value;
 
-    staff.innerHTML = '<option value="">Select Staff</option>';
+    staff.innerHTML =
+        '<option value="">Select Staff</option>';
 
-    options.forEach(function(option){
+    options.forEach(function(option) {
 
-        if(option.value == "") return;
+        if (option.value == "")
+            return;
 
-        if(option.dataset.department == dept){
+        if (option.dataset.department == dept) {
 
-            staff.appendChild(option.cloneNode(true));
+            staff.appendChild(
+                option.cloneNode(true)
+            );
 
         }
 

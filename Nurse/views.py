@@ -78,6 +78,20 @@ def student_visit(request, reg_no):
 
     if request.method == "POST":
 
+        medicines = request.POST.getlist("medicine[]")
+        dosages = request.POST.getlist("dosage[]")
+
+        medicine_details = []
+
+        for medicine, dosage in zip(medicines, dosages):
+
+            if medicine and dosage:
+                medicine_details.append(
+                    f"{medicine} - {dosage} mg"
+                )
+
+        medicine_text = ", ".join(medicine_details)
+
         StudentVisit.objects.create(
 
             reg_no=student.reg_no,
@@ -87,23 +101,32 @@ def student_visit(request, reg_no):
 
             problem=request.POST.get("problem"),
 
-            medicine=request.POST.get("medicine"),
-            dosage=request.POST.get("dosage_mg"),
+            medicine=medicine_text,
+
             staff_name=request.POST.get("staff_name"),
 
             chronic_illness=request.POST.get("chronic_illness")
-
         )
 
-        messages.success(request, "Student visit saved successfully.")
+        messages.success(
+            request,
+            "Student visit saved successfully."
+        )
 
         return redirect("student_search")
 
-    medicines = MedicineInventory.objects.all().order_by("medicine_name")
+    medicines = MedicineInventory.objects.all().order_by(
+        "medicine_name"
+    )
 
-    departments = Staff.objects.values("department").distinct().order_by("department")
+    departments = Staff.objects.values(
+        "department"
+    ).distinct().order_by("department")
 
-    staffs = Staff.objects.all().order_by("department", "name")
+    staffs = Staff.objects.all().order_by(
+        "department",
+        "name"
+    )
 
     context = {
 
@@ -120,10 +143,13 @@ def student_visit(request, reg_no):
         "chronic_choices": StudentVisit.CHRONIC_CHOICES,
 
         "page": "student_visit"
-
     }
 
-    return render(request, "Nurse/student_visit.html", context)
+    return render(
+        request,
+        "Nurse/student_visit.html",
+        context
+    )
 def student_search(request):
 
     reg_no = request.GET.get("reg_no")

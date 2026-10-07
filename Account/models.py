@@ -113,7 +113,6 @@ class StudentVisit(models.Model):
         choices=CHRONIC_CHOICES,
         default="No"
     )
-    dosage = models.CharField(max_length=50, blank=True, null=True)
     follow_up_days = models.PositiveIntegerField(blank=True,null=True)
     date = models.DateField(auto_now_add=True)
     time = models.TimeField(auto_now_add=True)

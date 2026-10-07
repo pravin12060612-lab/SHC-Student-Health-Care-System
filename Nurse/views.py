@@ -88,7 +88,7 @@ def student_visit(request, reg_no):
             problem=request.POST.get("problem"),
 
             medicine=request.POST.get("medicine"),
-
+            dosage=request.POST.get("dosage_mg"),
             staff_name=request.POST.get("staff_name"),
 
             chronic_illness=request.POST.get("chronic_illness")

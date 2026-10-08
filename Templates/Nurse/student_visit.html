@@ -6,15 +6,84 @@ Student Visit
 
 {% block content %}
 
+<style>
+
+    /* ================= MEDICINE ALIGNMENT ================= */
+
+    .medicine-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        width: 100%;
+    }
+
+    .medicine-select {
+        width: 50%;
+    }
+
+    .dosage-select {
+        width: 180px;
+        flex-shrink: 0;
+    }
+
+    .card-finished-box {
+        display: flex;
+        align-items: center;
+        white-space: nowrap;
+        height: 38px;
+        flex-shrink: 0;
+    }
+
+    .remove-medicine {
+        width: 38px;
+        height: 38px;
+        padding: 0;
+        flex-shrink: 0;
+    }
+
+    .medicine-info {
+        cursor: pointer;
+    }
+
+    #reg_no,
+    #student_name {
+        text-transform: uppercase;
+    }
+
+
+    /* ================= MOBILE ================= */
+
+    @media (max-width: 768px) {
+
+        .medicine-row {
+            flex-wrap: wrap;
+        }
+
+        .medicine-select {
+            width: 100%;
+        }
+
+        .dosage-select {
+            width: 180px;
+        }
+
+    }
+
+</style>
+
+
 <div class="container mt-4">
 
     <div class="card shadow">
 
         <div class="card-header bg-danger text-white">
+
             <h4 class="mb-0">
                 Student Visit
             </h4>
+
         </div>
+
 
         <div class="card-body">
 
@@ -22,75 +91,142 @@ Student Visit
 
                 {% csrf_token %}
 
-                <!-- ================= STUDENT INFORMATION ================= -->
+
+                <!-- =====================================================
+                     STUDENT INFORMATION
+                ===================================================== -->
 
                 <h5 class="text-danger mb-3">
                     Student Information
                 </h5>
 
+
                 <div class="row">
 
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Register Number</label>
-                        <input type="text"
-                               class="form-control"
-                               value="{{ student.reg_no }}"
-                               readonly>
-                    </div>
+
+                    <!-- REGISTER NUMBER -->
 
                     <div class="col-md-6 mb-3">
-                        <label class="form-label">Student Name</label>
-                        <input type="text"
-                               class="form-control"
-                               value="{{ student.name }}"
-                               readonly>
+
+                        <label class="form-label">
+                            Register Number
+                        </label>
+
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="reg_no"
+                            value="{{ student.reg_no|upper }}"
+                            readonly>
+
                     </div>
 
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Department</label>
-                        <input type="text"
-                               class="form-control"
-                               value="{{ student.department }}"
-                               readonly>
-                    </div>
+
+                    <!-- STUDENT NAME -->
 
                     <div class="col-md-6 mb-3">
-                        <label class="form-label">Year</label>
-                        <input type="text"
-                               class="form-control"
-                               value="{{ student.Year }}"
-                               readonly>
+
+                        <label class="form-label">
+                            Student Name
+                        </label>
+
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="student_name"
+                            value="{{ student.name|upper }}"
+                            readonly>
+
                     </div>
 
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Blood Group</label>
-                        <input type="text"
-                               class="form-control"
-                               value="{{ student.blood_group }}"
-                               readonly>
-                    </div>
+
+                    <!-- DEPARTMENT -->
 
                     <div class="col-md-6 mb-3">
-                        <label class="form-label">Phone</label>
-                        <input type="text"
-                               class="form-control"
-                               value="{{ student.phone }}"
-                               readonly>
+
+                        <label class="form-label">
+                            Department
+                        </label>
+
+                        <input
+                            type="text"
+                            class="form-control"
+                            value="{{ student.department }}"
+                            readonly>
+
                     </div>
+
+
+                    <!-- YEAR -->
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+                            Year
+                        </label>
+
+                        <input
+                            type="text"
+                            class="form-control"
+                            value="{{ student.Year }}"
+                            readonly>
+
+                    </div>
+
+
+                    <!-- BLOOD GROUP -->
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+                            Blood Group
+                        </label>
+
+                        <input
+                            type="text"
+                            class="form-control"
+                            value="{{ student.blood_group }}"
+                            readonly>
+
+                    </div>
+
+
+                    <!-- PHONE -->
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+                            Phone
+                        </label>
+
+                        <input
+                            type="text"
+                            class="form-control"
+                            value="{{ student.phone }}"
+                            readonly>
+
+                    </div>
+
 
                 </div>
 
+
                 <hr>
 
-                <!-- ================= VISIT DETAILS ================= -->
+
+                <!-- =====================================================
+                     VISIT DETAILS
+                ===================================================== -->
 
                 <h5 class="text-danger mb-3">
                     Visit Details
                 </h5>
 
+
                 <div class="row">
 
-                    <!-- Problem -->
+
+                    <!-- ================= PROBLEM ================= -->
 
                     <div class="col-md-6 mb-3">
 
@@ -98,9 +234,10 @@ Student Visit
                             Problem
                         </label>
 
-                        <select class="form-select"
-                                name="problem"
-                                required>
+                        <select
+                            class="form-select"
+                            name="problem"
+                            required>
 
                             <option value="">
                                 Select Problem
@@ -110,151 +247,6 @@ Student Visit
 
                                 <option value="{{ value }}">
                                     {{ label }}
-                                </option>
-
-                            {% endfor %}
-
-                        </select>
-
-                    </div>
-
-
-                    <!-- ================= MEDICINES ================= -->
-
-                    <div class="col-12 mb-3">
-
-                        <label class="form-label">
-                            Medicine Given
-                        </label>
-
-                        <div id="medicineContainer">
-
-                            <!-- FIRST MEDICINE ROW -->
-
-                            <div class="medicine-row row g-2 mb-2">
-
-                                <!-- Medicine -->
-
-                                <div class="col-md-5">
-
-                                    <select
-                                        class="form-select"
-                                        name="medicine[]"
-                                        required>
-
-                                        <option value="">
-                                            Select Medicine
-                                        </option>
-
-                                        {% for medicine in medicines %}
-
-                                            <option value="{{ medicine.medicine_name }}">
-                                                {{ medicine.medicine_name }}
-                                            </option>
-
-                                        {% endfor %}
-
-                                    </select>
-
-                                </div>
-
-
-                                <!-- Dosage -->
-
-                                <div class="col-md-5">
-
-                                    <input
-                                        type="text"
-                                        name="dosage[]"
-                                        class="form-control"
-                                        placeholder="Dosage (mg)"
-                                        required>
-
-                                </div>
-
-
-                                <!-- Add Button -->
-
-                                <div class="col-md-2">
-
-                                    <button
-                                        type="button"
-                                        class="btn btn-success w-100 add-medicine">
-
-                                        +
-
-                                    </button>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                        <small class="text-muted">
-                            Add multiple medicines using the + button.
-                        </small>
-
-                    </div>
-
-
-                    <!-- ================= STAFF DEPARTMENT ================= -->
-
-                    <div class="col-md-6 mb-3">
-
-                        <label class="form-label">
-                            Staff Department
-                        </label>
-
-                        <select
-                            class="form-select"
-                            id="department"
-                            name="department"
-                            required>
-
-                            <option value="">
-                                Select Department
-                            </option>
-
-                            {% for dept in departments %}
-
-                                <option value="{{ dept.department }}">
-                                    {{ dept.department }}
-                                </option>
-
-                            {% endfor %}
-
-                        </select>
-
-                    </div>
-
-
-                    <!-- ================= STAFF NAME ================= -->
-
-                    <div class="col-md-6 mb-3">
-
-                        <label class="form-label">
-                            Staff Name
-                        </label>
-
-                        <select
-                            class="form-select"
-                            id="staff_name"
-                            name="staff_name"
-                            required>
-
-                            <option value="">
-                                Select Staff
-                            </option>
-
-                            {% for staff in staffs %}
-
-                                <option
-                                    value="{{ staff.name }}"
-                                    data-department="{{ staff.department }}">
-
-                                    {{ staff.name }}
-
                                 </option>
 
                             {% endfor %}
@@ -293,10 +285,235 @@ Student Visit
 
                     </div>
 
+
+                    <!-- =================================================
+                         MEDICINE GIVEN
+                    ================================================= -->
+
+                    <div class="col-12 mb-3">
+
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+
+                            <label class="form-label mb-0">
+                                Medicine Given
+                            </label>
+
+
+                            <button
+                                type="button"
+                                class="btn btn-success btn-sm"
+                                id="addMedicine">
+
+                                + Add Medicine
+
+                            </button>
+
+                        </div>
+
+
+                        <div id="medicineContainer">
+
+
+                            <!-- ================= MEDICINE ROW ================= -->
+
+                            <div class="medicine-row mb-2">
+
+
+                                <!-- MEDICINE -->
+
+                                <select
+                                    class="form-select medicine-select"
+                                    name="medicine[]"
+                                    required>
+
+                                    <option value="">
+                                        Select Medicine
+                                    </option>
+
+                                    {% for medicine in medicines %}
+
+                                        <option value="{{ medicine.medicine_name }}">
+                                            {{ medicine.medicine_name }}
+                                        </option>
+
+                                    {% endfor %}
+
+                                </select>
+
+
+                                <!-- DOSAGE -->
+
+                                <select
+                                    class="form-select dosage-select"
+                                    name="dosage[]"
+                                    required>
+
+                                    <option value="">
+                                        Dosage
+                                    </option>
+
+                                    <option value="5 mg">
+                                        5 mg
+                                    </option>
+
+                                    <option value="10 mg">
+                                        10 mg
+                                    </option>
+
+                                    <option value="25 mg">
+                                        25 mg
+                                    </option>
+
+                                    <option value="50 mg">
+                                        50 mg
+                                    </option>
+
+                                    <option value="100 mg">
+                                        100 mg
+                                    </option>
+
+                                    <option value="250 mg">
+                                        250 mg
+                                    </option>
+
+                                    <option value="500 mg">
+                                        500 mg
+                                    </option>
+
+                                    <option value="650 mg">
+                                        650 mg
+                                    </option>
+
+                                </select>
+
+
+                                <!-- CARD FINISHED -->
+
+                                <div class="card-finished-box">
+
+                                    <div class="form-check mb-0">
+
+                                        <input
+                                            class="form-check-input card-finished"
+                                            type="checkbox"
+                                            name="card_finished[]"
+                                            value="">
+
+                                        <label class="form-check-label">
+                                            Card Finished
+                                        </label>
+
+                                    </div>
+
+
+                                    <span
+                                        class="medicine-info ms-1 text-secondary"
+                                        data-bs-toggle="tooltip"
+                                        data-bs-placement="top"
+                                        title="Card Finished: Check this when the medicine card/strip is completely empty.">
+
+                                        ⓘ
+
+                                    </span>
+
+                                </div>
+
+
+                                <!-- REMOVE -->
+
+                                <button
+                                    type="button"
+                                    class="btn btn-outline-danger btn-sm remove-medicine"
+                                    title="Remove medicine">
+
+                                    ×
+
+                                </button>
+
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         STAFF DEPARTMENT
+                         OPTIONAL
+                    ================================================= -->
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+                            Staff Department
+                        </label>
+
+                        <select
+                            class="form-select"
+                            id="department"
+                            name="department">
+
+                            <option value="">
+                                Select Department
+                            </option>
+
+                            {% for dept in departments %}
+
+                                <option value="{{ dept.department }}">
+                                    {{ dept.department }}
+                                </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         STAFF NAME
+                         OPTIONAL
+                    ================================================= -->
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+                            Staff Name
+                        </label>
+
+                        <select
+                            class="form-select"
+                            id="staff_name"
+                            name="staff_name">
+
+                            <option value="">
+                                Select Staff
+                            </option>
+
+                            {% for staff in staffs %}
+
+                                <option
+                                    value="{{ staff.name }}"
+                                    data-department="{{ staff.department }}">
+
+                                    {{ staff.name }}
+
+                                </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+
                 </div>
 
 
-                <!-- ================= SAVE ================= -->
+                <!-- =====================================================
+                     SAVE
+                ===================================================== -->
 
                 <div class="text-center mt-4">
 
@@ -310,6 +527,7 @@ Student Visit
 
                 </div>
 
+
             </form>
 
         </div>
@@ -319,110 +537,223 @@ Student Visit
 </div>
 
 
-<!-- ================= JAVASCRIPT ================= -->
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
 
 <script>
 
-/* =====================================================
-   ADD / REMOVE MEDICINE
-===================================================== */
-
-const medicineContainer =
-    document.getElementById("medicineContainer");
+document.addEventListener("DOMContentLoaded", function () {
 
 
-medicineContainer.addEventListener("click", function(event) {
+    /* =====================================================
+       TOOLTIP
+    ===================================================== */
 
-    /* ADD MEDICINE */
+    function initializeTooltips() {
 
-    if (event.target.classList.contains("add-medicine")) {
+        const tooltipTriggerList =
+            document.querySelectorAll(
+                '[data-bs-toggle="tooltip"]'
+            );
 
-        const firstRow =
-            document.querySelector(".medicine-row");
+        tooltipTriggerList.forEach(function (tooltipTriggerEl) {
 
-        const newRow =
-            firstRow.cloneNode(true);
+            new bootstrap.Tooltip(tooltipTriggerEl);
 
-        /* Clear selected medicine */
-
-        newRow.querySelector(
-            'select[name="medicine[]"]'
-        ).value = "";
-
-        /* Clear dosage */
-
-        newRow.querySelector(
-            'input[name="dosage[]"]'
-        ).value = "";
-
-
-        /* Change + button to - */
-
-        const button =
-            newRow.querySelector(".add-medicine");
-
-        button.classList.remove("btn-success");
-        button.classList.add("btn-danger");
-
-        button.classList.remove("add-medicine");
-        button.classList.add("remove-medicine");
-
-        button.innerHTML = "−";
-
-
-        medicineContainer.appendChild(newRow);
-    }
-
-
-    /* REMOVE MEDICINE */
-
-    if (event.target.classList.contains("remove-medicine")) {
-
-        const row =
-            event.target.closest(".medicine-row");
-
-        row.remove();
+        });
 
     }
 
-});
+
+    initializeTooltips();
 
 
-/* =====================================================
-   STAFF DEPARTMENT FILTER
-===================================================== */
+    /* =====================================================
+       MEDICINE
+    ===================================================== */
 
-const department =
-    document.getElementById("department");
+    const medicineContainer =
+        document.getElementById("medicineContainer");
 
-const staff =
-    document.getElementById("staff_name");
-
-const options =
-    Array.from(staff.options);
+    const addMedicine =
+        document.getElementById("addMedicine");
 
 
-department.addEventListener("change", function() {
+    /* ================= UPDATE CHECKBOX VALUE ================= */
 
-    let dept = this.value;
+    function updateCardFinishedValue(row) {
 
-    staff.innerHTML =
-        '<option value="">Select Staff</option>';
+        const medicine =
+            row.querySelector(
+                'select[name="medicine[]"]'
+            );
 
-    options.forEach(function(option) {
+        const checkbox =
+            row.querySelector(
+                ".card-finished"
+            );
 
-        if (option.value == "")
-            return;
+        checkbox.value = medicine.value;
 
-        if (option.dataset.department == dept) {
+    }
 
-            staff.appendChild(
-                option.cloneNode(true)
+
+    /* ================= MEDICINE CHANGE ================= */
+
+    medicineContainer.addEventListener(
+        "change",
+        function (event) {
+
+            if (
+                event.target.name === "medicine[]"
+            ) {
+
+                const row =
+                    event.target.closest(
+                        ".medicine-row"
+                    );
+
+                updateCardFinishedValue(row);
+
+            }
+
+        }
+    );
+
+
+    /* ================= ADD MEDICINE ================= */
+
+    addMedicine.addEventListener(
+        "click",
+        function () {
+
+            const firstRow =
+                document.querySelector(
+                    ".medicine-row"
+                );
+
+            const newRow =
+                firstRow.cloneNode(true);
+
+
+            newRow.querySelector(
+                'select[name="medicine[]"]'
+            ).value = "";
+
+
+            newRow.querySelector(
+                'select[name="dosage[]"]'
+            ).value = "";
+
+
+            const checkbox =
+                newRow.querySelector(
+                    ".card-finished"
+                );
+
+            checkbox.checked = false;
+            checkbox.value = "";
+
+
+            medicineContainer.appendChild(newRow);
+
+
+            const tooltip =
+                newRow.querySelector(
+                    '[data-bs-toggle="tooltip"]'
+                );
+
+            if (tooltip) {
+
+                new bootstrap.Tooltip(tooltip);
+
+            }
+
+        }
+    );
+
+
+    /* ================= REMOVE MEDICINE ================= */
+
+    medicineContainer.addEventListener(
+        "click",
+        function (event) {
+
+            if (
+                event.target.classList.contains(
+                    "remove-medicine"
+                )
+            ) {
+
+                const rows =
+                    document.querySelectorAll(
+                        ".medicine-row"
+                    );
+
+                if (rows.length > 1) {
+
+                    event.target
+                        .closest(".medicine-row")
+                        .remove();
+
+                }
+
+            }
+
+        }
+    );
+
+
+    /* =====================================================
+       STAFF DEPARTMENT FILTER
+    ===================================================== */
+
+    const department =
+        document.getElementById("department");
+
+    const staff =
+        document.getElementById("staff_name");
+
+    const originalStaffOptions =
+        Array.from(staff.options);
+
+
+    department.addEventListener(
+        "change",
+        function () {
+
+            const selectedDepartment =
+                this.value;
+
+            staff.innerHTML =
+                '<option value="">Select Staff</option>';
+
+
+            originalStaffOptions.forEach(
+                function (option) {
+
+                    if (option.value === "") {
+                        return;
+                    }
+
+                    if (
+                        option.dataset.department ===
+                        selectedDepartment
+                    ) {
+
+                        staff.appendChild(
+                            option.cloneNode(true)
+                        );
+
+                    }
+
+                }
             );
 
         }
+    );
 
-    });
 
 });
 

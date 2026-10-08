@@ -9,7 +9,7 @@ from django.http import HttpResponse
 from reportlab.lib.units import inch
 from reportlab.pdfgen import canvas
 import django.utils.json as json
-import json
+from django.db import transaction
 
 def nurse_dashboard(request):
 
@@ -80,76 +80,61 @@ def student_visit(request, reg_no):
 
         medicines = request.POST.getlist("medicine[]")
         dosages = request.POST.getlist("dosage[]")
+        card_finished = request.POST.getlist("card_finished[]")
 
         medicine_details = []
 
         for medicine, dosage in zip(medicines, dosages):
 
             if medicine and dosage:
-                medicine_details.append(
-                    f"{medicine} - {dosage} mg"
-                )
+                medicine_details.append(f"{medicine} - {dosage}")
 
         medicine_text = ", ".join(medicine_details)
 
-        StudentVisit.objects.create(
+        with transaction.atomic():
 
-            reg_no=student.reg_no,
-            student_name=student.name,
-            department=student.department,
-            blood_group=student.blood_group,
+            StudentVisit.objects.create(
+                reg_no=student.reg_no,
+                student_name=student.name,
+                department=student.department,
+                blood_group=student.blood_group,
+                problem=request.POST.get("problem"),
+                medicine=medicine_text,
+                staff_name=request.POST.get("staff_name"),
+                chronic_illness=request.POST.get("chronic_illness")
+            )
 
-            problem=request.POST.get("problem"),
+            for medicine_name in card_finished:
 
-            medicine=medicine_text,
+                if medicine_name:
 
-            staff_name=request.POST.get("staff_name"),
+                    inventory = MedicineInventory.objects.select_for_update().filter(medicine_name=medicine_name).first()
 
-            chronic_illness=request.POST.get("chronic_illness")
-        )
+                    if inventory and inventory.quantity > 0:
+                        inventory.quantity -= 1
+                        inventory.save(update_fields=["quantity"])
 
-        messages.success(
-            request,
-            "Student visit saved successfully."
-        )
+        messages.success(request, "Student visit saved successfully.")
 
         return redirect("student_search")
 
-    medicines = MedicineInventory.objects.all().order_by(
-        "medicine_name"
-    )
+    medicines = MedicineInventory.objects.all().order_by("medicine_name")
 
-    departments = Staff.objects.values(
-        "department"
-    ).distinct().order_by("department")
+    departments = Staff.objects.values("department").distinct().order_by("department")
 
-    staffs = Staff.objects.all().order_by(
-        "department",
-        "name"
-    )
+    staffs = Staff.objects.all().order_by("department", "name")
 
     context = {
-
         "student": student,
-
         "medicines": medicines,
-
         "departments": departments,
-
         "staffs": staffs,
-
         "problems": StudentVisit.PROBLEM_CHOICES,
-
         "chronic_choices": StudentVisit.CHRONIC_CHOICES,
-
         "page": "student_visit"
     }
 
-    return render(
-        request,
-        "Nurse/student_visit.html",
-        context
-    )
+    return render(request, "Nurse/student_visit.html", context)
 def student_search(request):
 
     reg_no = request.GET.get("reg_no")
@@ -189,28 +174,94 @@ def visit_history(request):
     return render(request, "Nurse/visit_history.html", context)
 def inventory(request):
 
+    if request.method == "POST":
+
+        action = request.POST.get("action")
+
+        if action == "add_medicine":
+
+            medicine_name = request.POST.get("medicine_name", "").strip()
+            quantity = request.POST.get("quantity", 0)
+            expiry_date = request.POST.get("expiry_date")
+            description = request.POST.get("description", "").strip()
+
+            if MedicineInventory.objects.filter(medicine_name__iexact=medicine_name).exists():
+
+                messages.error(request, "Medicine already exists.")
+
+            else:
+
+                MedicineInventory.objects.create(
+                    medicine_name=medicine_name,
+                    quantity=int(quantity),
+                    expiry_date=expiry_date,
+                    description=description
+                )
+
+                messages.success(request, "Medicine added successfully.")
+
+
+        elif action == "update_stock":
+
+            medicine_id = request.POST.get("medicine_id")
+            add_quantity = request.POST.get("add_quantity")
+            expiry_date = request.POST.get("expiry_date")
+
+            medicine = MedicineInventory.objects.filter(medicine_id=medicine_id).first()
+
+            if medicine:
+
+                medicine.quantity += int(add_quantity)
+                medicine.expiry_date = expiry_date
+                medicine.save()
+
+                messages.success(request, "Stock updated successfully.")
+
+            else:
+
+                messages.error(request, "Medicine not found.")
+
+
+        return redirect("inventory")
+
+
+    search = request.GET.get("search", "").strip()
+
     medicines = MedicineInventory.objects.all().order_by("medicine_name")
 
-    search = request.GET.get("search")
-
     if search:
-        medicines = medicines.filter(medicine_name__icontains=search)
+
+        medicines = medicines.filter(
+            medicine_name__icontains=search
+        )
+
 
     total_medicines = medicines.count()
 
-    total_stock = medicines.aggregate(
-        total=Sum("quantity")
-    )["total"] or 0
+    total_stock = sum(
+        medicine.quantity
+        for medicine in medicines
+    )
+
+    low_stock = medicines.filter(
+        quantity__gt=0,
+        quantity__lte=3
+    ).count()
+
 
     context = {
         "medicines": medicines,
-        "search": search,
         "total_medicines": total_medicines,
         "total_stock": total_stock,
-        "page": "inventory",
+        "low_stock": low_stock,
+        "search": search
     }
 
-    return render(request, "Nurse/inventory.html", context)
+    return render(
+        request,
+        "Nurse/inventory.html",
+        context
+    )
 def chronic_illness(request):
 
     # -----------------------------
@@ -503,16 +554,20 @@ def download_inventory_pdf(request):
 
 def contact_enquiries(request):
 
+    if request.method == "POST":
+
+        enquiry_id = request.POST.get("enquiry_id")
+
+        enquiry = ContactInfo.objects.filter(id=enquiry_id).first()
+
+        if enquiry:
+            enquiry.delete()
+
+        return redirect("contact_enquiries")
+
     enquiries = ContactInfo.objects.all().order_by("-id")
 
-    return render(
-        request,
-        "Nurse/contact_enquiries.html",
-        {
-            "enquiries": enquiries,
-            "page": "contact_enquiries"
-        }
-    )
+    return render(request, "Nurse/contact_enquiries.html", {"enquiries": enquiries})
 def nurse_logout(request):
     request.session.flush()
     storage = messages.get_messages(request)

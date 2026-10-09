@@ -76,8 +76,8 @@ class Nurse(models.Model):
 
     def __str__(self):
         return self.name
-class StudentVisit(models.Model):
 
+class StudentVisit(models.Model):
     PROBLEM_CHOICES = [
         ("Fever", "Fever"),
         ("Headache", "Headache"),
@@ -92,6 +92,17 @@ class StudentVisit(models.Model):
     ]
 
     visit_id = models.AutoField(primary_key=True)
+
+    # ForeignKey relationship with Student
+    student = models.ForeignKey(
+        Student,
+        on_delete=models.PROTECT,
+        related_name="visits",
+        null=True,
+        blank=True
+    )
+
+    # Student details recorded at the time of the visit
     reg_no = models.CharField(max_length=50)
     student_name = models.CharField(max_length=100)
     department = models.CharField(max_length=100)
@@ -103,9 +114,7 @@ class StudentVisit(models.Model):
     )
 
     medicine = models.CharField(max_length=255)
-
     staff_name = models.CharField(max_length=100, blank=True, null=True)
-
     remarks = models.TextField(blank=True, null=True)
 
     chronic_illness = models.CharField(
@@ -113,10 +122,14 @@ class StudentVisit(models.Model):
         choices=CHRONIC_CHOICES,
         default="No"
     )
-    follow_up_days = models.PositiveIntegerField(blank=True,null=True)
+
+    follow_up_days = models.PositiveIntegerField(
+        blank=True,
+        null=True
+    )
+
     date = models.DateField(auto_now_add=True)
     time = models.TimeField(auto_now_add=True)
-
 
     def __str__(self):
         return f"{self.reg_no} - {self.date}"

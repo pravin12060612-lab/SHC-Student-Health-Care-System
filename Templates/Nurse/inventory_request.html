@@ -1,7 +1,9 @@
 {% extends "Nurse/index.html" %}
 {% load static %}
 
-{% block title %}Inventory Purchase Request{% endblock %}
+{% block title %}
+Inventory Purchase Request
+{% endblock %}
 
 {% block content %}
 
@@ -20,9 +22,11 @@
 
         <div class="card-body">
 
-            <form id="requestForm"
-                  method="POST"
-                  action="{% url 'download_inventory_pdf' %}">
+            <form
+                id="requestForm"
+                method="POST"
+                action="{% url 'download_inventory_pdf' %}"
+                onsubmit="return prepareData();">
 
                 {% csrf_token %}
 
@@ -31,22 +35,22 @@
                     <div class="col-md-6 mb-3">
 
                         <label class="form-label fw-bold">
-
                             Select Inventory Item
-
                         </label>
 
                         <select
                             id="itemSelect"
                             class="form-select">
 
-                            <option value="">Choose Item</option>
+                            <option value="">
+                                Choose Item
+                            </option>
 
                             {% for item in inventory %}
 
-                           <option value="{{ item.medicine_name }}">
-    {{ item.medicine_name }} (Available: {{ item.quantity }})
-</option>
+                            <option value="{{ item.medicine_name }}">
+                                {{ item.medicine_name }} (Available: {{ item.quantity }})
+                            </option>
 
                             {% endfor %}
 
@@ -54,12 +58,11 @@
 
                     </div>
 
+
                     <div class="col-md-3 mb-3">
 
                         <label class="form-label fw-bold">
-
                             Required Qty
-
                         </label>
 
                         <input
@@ -70,6 +73,7 @@
 
                     </div>
 
+
                     <div class="col-md-3 d-flex align-items-end">
 
                         <button
@@ -78,7 +82,6 @@
                             onclick="addItem()">
 
                             <i class="bi bi-plus-circle"></i>
-
                             Add Item
 
                         </button>
@@ -87,70 +90,81 @@
 
                 </div>
 
+
                 <hr>
 
+
                 <h5>
-
                     Selected Items
-
                 </h5>
 
-                <table class="table table-bordered table-striped">
 
-                    <thead class="table-danger">
+                <div class="table-responsive">
 
-                        <tr>
+                    <table class="table table-bordered table-striped">
 
-                            <th width="60">No</th>
+                        <thead class="table-danger">
 
-                            <th>Item</th>
+                            <tr>
 
-                            <th width="150">Quantity</th>
+                                <th width="60">
+                                    No
+                                </th>
 
-                            <th width="100">Action</th>
+                                <th>
+                                    Item
+                                </th>
 
-                        </tr>
+                                <th width="150">
+                                    Quantity
+                                </th>
 
-                    </thead>
+                                <th width="100">
+                                    Action
+                                </th>
 
-                    <tbody id="itemTable">
+                            </tr>
 
-                    </tbody>
+                        </thead>
 
-                </table>
+
+                        <tbody id="itemTable">
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
 
                 <input
                     type="hidden"
                     id="itemsData"
                     name="items">
 
+
                 <div class="mb-3">
 
                     <label class="form-label fw-bold">
-
                         Remarks (Optional)
-
                     </label>
 
                     <textarea
                         name="remarks"
                         rows="3"
                         class="form-control"
-                        placeholder="Example : Monthly stock refill">
-
-                    </textarea>
+                        placeholder="Example : Monthly stock refill"></textarea>
 
                 </div>
+
 
                 <div class="text-end">
 
                     <button
                         type="submit"
-                        class="btn btn-danger btn-lg"
-                        onclick="prepareData()">
+                        class="btn btn-danger btn-lg">
 
                         <i class="bi bi-file-earmark-pdf"></i>
-
                         Download PDF
 
                     </button>
@@ -165,17 +179,18 @@
 
 </div>
 
+
 <script>
 
 let items = [];
 
-function addItem(){
+
+function addItem() {
 
     let item = document.getElementById("itemSelect").value;
-
     let qty = document.getElementById("qty").value;
 
-    if(item=="" || qty==""){
+    if (item === "" || qty === "") {
 
         alert("Select item and quantity");
 
@@ -183,53 +198,65 @@ function addItem(){
 
     }
 
+    if (parseInt(qty) <= 0) {
+
+        alert("Quantity must be greater than 0");
+
+        return;
+
+    }
+
     items.push({
-
-        item:item,
-
-        qty:qty
-
+        item: item,
+        qty: qty
     });
 
     renderTable();
 
-    document.getElementById("qty").value="";
-    document.getElementById("itemSelect").selectedIndex=0;
+    document.getElementById("qty").value = "";
+    document.getElementById("itemSelect").selectedIndex = 0;
 
 }
 
-function renderTable(){
 
-    let tbody=document.getElementById("itemTable");
+function renderTable() {
 
-    tbody.innerHTML="";
+    let tbody = document.getElementById("itemTable");
 
-    items.forEach((x,index)=>{
+    tbody.innerHTML = "";
 
-        tbody.innerHTML+=`
+    items.forEach(function(x, index) {
 
-        <tr>
+        tbody.innerHTML += `
 
-            <td>${index+1}</td>
+            <tr>
 
-            <td>${x.item}</td>
+                <td>
+                    ${index + 1}
+                </td>
 
-            <td>${x.qty}</td>
+                <td>
+                    ${x.item}
+                </td>
 
-            <td>
+                <td>
+                    ${x.qty}
+                </td>
 
-                <button
-                    type="button"
-                    class="btn btn-sm btn-danger"
-                    onclick="removeItem(${index})">
+                <td>
 
-                    Remove
+                    <button
+                        type="button"
+                        class="btn btn-sm btn-danger"
+                        onclick="removeItem(${index})">
 
-                </button>
+                        Remove
 
-            </td>
+                    </button>
 
-        </tr>
+                </td>
+
+            </tr>
 
         `;
 
@@ -237,18 +264,29 @@ function renderTable(){
 
 }
 
-function removeItem(index){
 
-    items.splice(index,1);
+function removeItem(index) {
+
+    items.splice(index, 1);
 
     renderTable();
 
 }
 
-function prepareData(){
 
-    document.getElementById("itemsData").value=
-    JSON.stringify(items);
+function prepareData() {
+
+    if (items.length === 0) {
+
+        alert("Please add at least one item.");
+
+        return false;
+
+    }
+
+    document.getElementById("itemsData").value = JSON.stringify(items);
+
+    return true;
 
 }
 

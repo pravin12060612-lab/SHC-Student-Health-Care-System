@@ -1,0 +1,392 @@
+
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}SHC Student Health Care System{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+
+<style>
+    :root {
+        --shc-red: #dc3545;
+        --shc-dark-red: #b02a37;
+        --shc-light-red: #fff0f1;
+        --shc-text: #26344b;
+        --shc-muted: #6b7280;
+        --shc-border: #e7ebf1;
+        --shc-background: #f5f7fb;
+        --shc-radius: 14px;
+    }
+
+    /* ===== PAGE ===== */
+    body {
+        background: var(--shc-background) !important;
+        color: var(--shc-text);
+    }
+
+    #container {
+        background: var(--shc-background);
+        min-height: 100vh;
+    }
+
+    /* ===== TOP HEADER ===== */
+    #header {
+        background: linear-gradient(120deg, #dc3545, #a71d2a) !important;
+        color: #fff !important;
+        padding: 18px 26px !important;
+        border-radius: 0 0 18px 18px;
+        box-shadow: 0 5px 18px rgba(100, 20, 30, 0.16);
+    }
+
+    #header a:link,
+    #header a:visited,
+    #header a:hover {
+        color: #fff !important;
+    }
+
+    #site-name {
+        margin: 0 !important;
+        padding: 0 !important;
+        font-size: 25px !important;
+        font-weight: 750 !important;
+        letter-spacing: 0.2px;
+    }
+
+    #site-name a {
+        color: #fff !important;
+        text-decoration: none !important;
+    }
+
+    #user-tools {
+        padding-top: 5px;
+        font-size: 12px;
+    }
+
+    /* ===== BREADCRUMBS ===== */
+    div.breadcrumbs {
+        background: #fff0f1 !important;
+        color: #842029 !important;
+        padding: 12px 22px !important;
+        margin: 14px 22px 0 !important;
+        border-radius: 10px;
+    }
+
+    div.breadcrumbs a {
+        color: #b02a37 !important;
+    }
+
+    /* ==================================================
+       DASHBOARD LAYOUT
+       This is the important fix:
+       title spans both columns, with the modules on the
+       left and Recent actions on the right.
+       ================================================== */
+    body.dashboard #content {
+        display: grid !important;
+        grid-template-columns: minmax(0, 2fr) minmax(280px, 0.9fr) !important;
+        grid-template-areas:
+            "title title"
+            "main related" !important;
+        gap: 0 26px !important;
+        align-items: start !important;
+        width: auto !important;
+        max-width: 1600px;
+        box-sizing: border-box !important;
+        padding: 24px !important;
+        margin: 0 auto !important;
+        overflow: visible !important;
+    }
+
+    /* Dashboard title */
+    body.dashboard #content > h1 {
+        grid-area: title !important;
+        float: none !important;
+        width: auto !important;
+        margin: 0 0 24px !important;
+        padding: 0 0 14px !important;
+        color: var(--shc-text) !important;
+        font-size: 28px !important;
+        font-weight: 750 !important;
+        letter-spacing: -0.4px;
+        border-bottom: 3px solid var(--shc-red);
+        line-height: 1.35;
+    }
+
+    /* Left column */
+    body.dashboard #content-main {
+        grid-area: main !important;
+        float: none !important;
+        width: auto !important;
+        min-width: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Right column */
+    body.dashboard #content-related {
+        grid-area: related !important;
+        float: none !important;
+        width: auto !important;
+        min-width: 0 !important;
+        margin: 0 !important;
+        padding: 20px !important;
+        box-sizing: border-box !important;
+        align-self: start !important;
+        background: #fff !important;
+        border: 1px solid var(--shc-border) !important;
+        border-radius: var(--shc-radius) !important;
+        box-shadow: 0 6px 22px rgba(31, 41, 55, 0.07) !important;
+    }
+
+    /* ===== ACCOUNT / AUTHENTICATION CARDS ===== */
+    #content-main .module,
+    .dashboard #content-main .module {
+        background: #fff !important;
+        border: 1px solid var(--shc-border) !important;
+        border-radius: var(--shc-radius) !important;
+        overflow: hidden !important;
+        margin: 0 0 24px !important;
+        box-shadow: 0 5px 18px rgba(31, 41, 55, 0.06) !important;
+    }
+
+    #content-main .module caption,
+    #content-main .module h2 {
+        background: linear-gradient(
+            120deg,
+            var(--shc-red),
+            var(--shc-dark-red)
+        ) !important;
+        color: #fff !important;
+        padding: 15px 18px !important;
+        font-size: 14px !important;
+        font-weight: 700 !important;
+        letter-spacing: 0.4px;
+    }
+
+    #content-main .module table {
+        width: 100% !important;
+        border-collapse: collapse !important;
+    }
+
+    #content-main .module th,
+    #content-main .module td {
+        padding: 12px 10px !important;
+        border-bottom: 1px solid #edf0f4 !important;
+    }
+
+    #content-main .module tr:last-child th,
+    #content-main .module tr:last-child td {
+        border-bottom: none !important;
+    }
+
+    #content-main .module tr {
+        transition: background 0.2s ease;
+    }
+
+    #content-main .module tr:hover {
+        background: #fff5f5 !important;
+    }
+
+    #content-main .module a {
+        text-decoration: none !important;
+    }
+
+    #content-main .module a:hover {
+        color: var(--shc-red) !important;
+    }
+
+    /* ===== RECENT ACTIONS TITLE ===== */
+    #content-related h2 {
+        display: block !important;
+        background: transparent !important;
+        color: var(--shc-text) !important;
+        font-size: 21px !important;
+        font-weight: 750 !important;
+        line-height: 1.4;
+        padding: 0 0 15px !important;
+        margin: 0 0 16px !important;
+        border-bottom: 1px solid var(--shc-border) !important;
+    }
+
+    #content-related h3 {
+        display: block !important;
+        background: var(--shc-light-red) !important;
+        color: var(--shc-dark-red) !important;
+        font-size: 12px !important;
+        font-weight: 750 !important;
+        letter-spacing: 0.7px;
+        text-transform: uppercase;
+        padding: 12px 14px !important;
+        margin: 0 0 14px !important;
+        border-radius: 9px !important;
+    }
+
+    /* ===== RECENT ACTIONS LIST ===== */
+    #content-related .actionlist {
+        list-style: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    #content-related .actionlist li {
+        display: block !important;
+        box-sizing: border-box !important;
+        background: #fff !important;
+        border: 1px solid var(--shc-border) !important;
+        border-left: 4px solid var(--shc-red) !important;
+        border-radius: 10px !important;
+        padding: 12px 13px !important;
+        margin: 0 0 10px !important;
+        color: var(--shc-text) !important;
+        line-height: 1.55 !important;
+        overflow-wrap: anywhere;
+        transition: background 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    #content-related .actionlist li:hover {
+        background: #fff7f7 !important;
+        box-shadow: 0 4px 12px rgba(220, 53, 69, 0.08);
+    }
+
+    #content-related .actionlist a {
+        color: var(--shc-text) !important;
+        font-weight: 650 !important;
+        text-decoration: none !important;
+    }
+
+    #content-related .actionlist a:hover {
+        color: var(--shc-red) !important;
+    }
+
+    #content-related .actionlist .mini {
+        color: var(--shc-muted) !important;
+        font-size: 11px !important;
+    }
+
+    /* ===== BUTTONS ===== */
+    .button,
+    input[type="submit"],
+    input[type="button"],
+    .submit-row input,
+    a.button,
+    button,
+    .object-tools a {
+        background: linear-gradient(
+            120deg,
+            var(--shc-red),
+            var(--shc-dark-red)
+        ) !important;
+        color: #fff !important;
+        border: none !important;
+        border-radius: 9px !important;
+        padding: 9px 16px !important;
+        font-weight: 650 !important;
+        box-shadow: 0 3px 8px rgba(220, 53, 69, 0.15);
+        transition: all 0.2s ease;
+        cursor: pointer;
+    }
+
+    .button:hover,
+    input[type="submit"]:hover,
+    input[type="button"]:hover,
+    .submit-row input:hover,
+    a.button:hover,
+    button:hover,
+    .object-tools a:hover {
+        background: linear-gradient(120deg, #b02a37, #8f1d2c) !important;
+        color: #fff !important;
+        box-shadow: 0 5px 12px rgba(220, 53, 69, 0.22);
+    }
+
+    a.deletelink,
+    .deletelink,
+    .submit-row a.deletelink {
+        background: #842029 !important;
+        color: #fff !important;
+        border-radius: 9px !important;
+    }
+
+    /* ===== FORM FIELDS ===== */
+    input[type="text"],
+    input[type="password"],
+    input[type="email"],
+    input[type="number"],
+    input[type="date"],
+    input[type="url"],
+    select,
+    textarea {
+        border: 1px solid #d8dee8 !important;
+        border-radius: 8px !important;
+        padding: 8px 10px !important;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+        border-color: var(--shc-red) !important;
+        outline: 2px solid rgba(220, 53, 69, 0.12) !important;
+    }
+
+    /* ===== SIDEBAR AND MESSAGES ===== */
+    #nav-sidebar {
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    .messagelist li {
+        border-radius: 9px !important;
+        margin-bottom: 8px !important;
+    }
+
+    /* ===== RESPONSIVE LAYOUT ===== */
+    @media (max-width: 900px) {
+        body.dashboard #content {
+            grid-template-columns: minmax(0, 1fr) !important;
+            grid-template-areas:
+                "title"
+                "main"
+                "related" !important;
+            gap: 0 !important;
+            padding: 18px !important;
+        }
+
+        body.dashboard #content > h1 {
+            font-size: 24px !important;
+        }
+
+        body.dashboard #content-related {
+            margin-top: 4px !important;
+        }
+    }
+
+    @media (max-width: 480px) {
+        #header {
+            padding: 14px 16px !important;
+        }
+
+        #site-name {
+            font-size: 20px !important;
+        }
+
+        body.dashboard #content {
+            padding: 12px !important;
+        }
+
+        #content-related {
+            padding: 14px !important;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block branding %}
+<h1 id="site-name">
+    <a href="{% url 'admin:index' %}">
+        SHC Student Health Care System
+    </a>
+</h1>
+{% endblock %}

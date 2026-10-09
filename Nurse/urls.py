@@ -11,4 +11,11 @@ urlpatterns = [
     path("download-inventory-pdf/",views.download_inventory_pdf,name="download_inventory_pdf"),
     path("contact-enquiries/",views.contact_enquiries,name="contact_enquiries"),
     path("logout/",views.nurse_logout,name="nurse_logout"),
+    path("download-inventory-excel/", views.download_inventory_excel, name="download_inventory_excel"),
+    path("download-visit-history-excel/", views.download_visit_history_excel, name="download_visit_history_excel"),
+    path(
+    "download-chronic-illness-excel/",
+    views.download_chronic_illness_excel,
+    name="download_chronic_illness_excel",
+),
 ]

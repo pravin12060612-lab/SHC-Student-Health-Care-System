@@ -1,12 +1,24 @@
+
 {% extends "Nurse/index.html" %}
+
+{% block title %}Student Visit History{% endblock %}
+
 {% block content %}
 
 <div class="container mt-4">
 
-    <h3 class="mb-4">
-        Student Visit History
-    </h3>
+    <!-- PAGE HEADER -->
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+        <h3 class="mb-0">Student Visit History</h3>
 
+        <a href="{% url 'download_visit_history_excel' %}?date={{ selected_date|urlencode }}&problem={{ selected_problem|urlencode }}&reg_no={{ reg_no|urlencode }}"
+           class="btn btn-success">
+            <i class="bi bi-file-earmark-excel"></i>
+            Download Excel
+        </a>
+    </div>
+
+    <!-- SEARCH FILTERS -->
     <form method="GET" class="row g-3 mb-4">
 
         <div class="col-md-3">
@@ -19,18 +31,14 @@
 
         <div class="col-md-3">
             <select name="problem" class="form-select">
-
                 <option value="">All Problems</option>
 
-                {% for value,label in problems %}
-
-                <option value="{{ value }}"
-                    {% if selected_problem == value %}selected{% endif %}>
-                    {{ label }}
-                </option>
-
+                {% for value, label in problems %}
+                    <option value="{{ value }}"
+                        {% if selected_problem == value %}selected{% endif %}>
+                        {{ label }}
+                    </option>
                 {% endfor %}
-
             </select>
         </div>
 
@@ -43,77 +51,69 @@
                 value="{{ reg_no }}">
         </div>
 
-        <div class="col-md-3 d-grid">
-            <button class="btn btn-primary">
-                Search
+        <div class="col-md-3 d-flex gap-2">
+            <button type="submit" class="btn btn-primary flex-fill">
+                <i class="bi bi-search"></i> Search
             </button>
+
+            <a href="{% url 'visit_history' %}" class="btn btn-secondary">
+                Clear
+            </a>
         </div>
 
     </form>
 
-    <table class="table table-bordered table-hover align-middle">
+    <!-- VISIT HISTORY TABLE -->
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover align-middle">
 
-        <thead class="table-danger">
+            <thead class="table-danger">
+                <tr>
+                    <th>No</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Reg No</th>
+                    <th>Student</th>
+                    <th>Department</th>
+                    <th>Problem</th>
+                    <th>Medicine</th>
+                    <th>Staff</th>
+                    <th>Chronic Illness</th>
+                </tr>
+            </thead>
 
-            <tr>
-                <th>Date</th>
-                <th>Time</th>
-                <th>Reg No</th>
-                <th>Student</th>
-                <th>Department</th>
-                <th>Problem</th>
-                <th>Medicine</th>
-                <th>Staff</th>
-                <th>Chronic</th>
-            </tr>
+            <tbody>
+                {% for visit in visits %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ visit.date|date:"d-m-Y" }}</td>
+                        <td>{{ visit.time|time:"h:i A" }}</td>
+                        <td>{{ visit.reg_no }}</td>
+                        <td>{{ visit.student_name }}</td>
+                        <td>{{ visit.department }}</td>
+                        <td>{{ visit.problem }}</td>
+                        <td>{{ visit.medicine }}</td>
+                        <td>{{ visit.staff_name|default:"-" }}</td>
+                        <td>
+                            {% if visit.chronic_illness == "Yes" %}
+                                <span class="badge bg-danger">Yes</span>
+                            {% else %}
+                                <span class="badge bg-success">No</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="10" class="text-center text-muted py-4">
+                            <i class="bi bi-inbox fs-4 d-block mb-2"></i>
+                            No visit records found.
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
 
-        </thead>
-
-        <tbody>
-
-            {% for visit in visits %}
-
-            <tr>
-
-                <td>{{ visit.date }}</td>
-
-                <td>{{ visit.time|time:"h:i A" }}</td>
-
-                <td>{{ visit.reg_no }}</td>
-
-                <td>{{ visit.student_name }}</td>
-
-                <td>{{ visit.department }}</td>
-
-                <td>{{ visit.problem }}</td>
-
-                <td>{{ visit.medicine }}</td>
-
-                <td>{{ visit.staff_name }}</td>
-
-                <td>
-                    {% if visit.chronic_illness == "Yes" %}
-                        <span class="badge bg-danger">Yes</span>
-                    {% else %}
-                        <span class="badge bg-success">No</span>
-                    {% endif %}
-                </td>
-
-            </tr>
-
-            {% empty %}
-
-            <tr>
-
-                <td colspan="9" class="text-center text-muted">
-                    No visit records found.
-                </td>
-            </tr>
-            {% endfor %}
-
-        </tbody>
-
-    </table>
+        </table>
+    </div>
 
 </div>
 

@@ -1,503 +1,231 @@
 {% extends "Nurse/index.html" %}
+{% load static %}
 
-{% block title %}
-Medicine Inventory
-{% endblock %}
+{% block title %}Medicine Inventory{% endblock %}
 
 {% block content %}
 
 <div class="container mt-4">
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    <!-- PAGE HEADER -->
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+        <h3 class="mb-0">Medicine Inventory</h3>
 
-        <h3 class="mb-0">
-            Medicine Inventory
-        </h3>
+        <div class="d-flex gap-2 flex-wrap">
+            <a href="{% url 'download_inventory_excel' %}{% if search %}?search={{ search|urlencode }}{% endif %}"
+               class="btn btn-success">
+                <i class="bi bi-file-earmark-excel"></i> Download Excel
+            </a>
 
-        <button
-            type="button"
-            class="btn btn-success"
-            data-bs-toggle="modal"
-            data-bs-target="#addMedicineModal">
-
-            + Add Medicine
-
-        </button>
-
-    </div>
-
-
-    <!-- ================= SUMMARY CARDS ================= -->
-
-    <div class="row mb-4">
-
-        <div class="col-md-4">
-
-            <div class="card border-primary shadow-sm">
-
-                <div class="card-body">
-
-                    <h6>Total Medicines</h6>
-
-                    <h3>{{ total_medicines }}</h3>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <div class="col-md-4">
-
-            <div class="card border-success shadow-sm">
-
-                <div class="card-body">
-
-                    <h6>Total Stock</h6>
-
-                    <h3>{{ total_stock }}</h3>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <div class="col-md-4">
-
-            <div class="card border-warning shadow-sm">
-
-                <div class="card-body">
-
-                    <h6>Low Stock</h6>
-
-                    <h3>{{ low_stock }}</h3>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- ================= SEARCH ================= -->
-
-    <form method="GET" class="mb-3">
-
-        <div class="input-group">
-
-            <input
-                type="text"
-                class="form-control"
-                name="search"
-                placeholder="Search Medicine..."
-                value="{{ search }}">
-
-            <button class="btn btn-primary">
-                Search
+            <button type="button" class="btn btn-success"
+                    data-bs-toggle="modal" data-bs-target="#addMedicineModal">
+                <i class="bi bi-plus-circle"></i> Add Medicine
             </button>
+        </div>
+    </div>
 
+    <!-- SUMMARY CARDS -->
+    <div class="row mb-4 g-3">
+        <div class="col-md-4">
+            <div class="card border-primary shadow-sm h-100">
+                <div class="card-body">
+                    <h6>Total Medicines</h6>
+                    <h3>{{ total_medicines }}</h3>
+                </div>
+            </div>
         </div>
 
+        <div class="col-md-4">
+            <div class="card border-success shadow-sm h-100">
+                <div class="card-body">
+                    <h6>Total Stock</h6>
+                    <h3>{{ total_stock }}</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card border-warning shadow-sm h-100">
+                <div class="card-body">
+                    <h6>Low Stock</h6>
+                    <h3>{{ low_stock }}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+   
+
+    <!-- SEARCH -->
+    <form method="GET" class="mb-3">
+        <div class="input-group">
+            <input type="text" class="form-control"
+                   name="search" placeholder="Search Medicine..."
+                   value="{{ search }}">
+            <button type="submit" class="btn btn-primary">
+                <i class="bi bi-search"></i> Search
+            </button>
+            {% if search %}
+                <a href="{% url 'inventory' %}" class="btn btn-secondary">Clear</a>
+            {% endif %}
+        </div>
     </form>
 
-
-    <!-- ================= INVENTORY TABLE ================= -->
-
+    <!-- INVENTORY TABLE -->
     <div class="table-responsive">
-
         <table class="table table-bordered table-hover align-middle">
-
             <thead class="table-danger">
-
                 <tr>
-
                     <th>No</th>
                     <th>Medicine</th>
                     <th>Available Stock</th>
                     <th>Expiry Date</th>
                     <th>Status</th>
                     <th>Action</th>
-
                 </tr>
-
             </thead>
 
-
             <tbody>
-
                 {% for medicine in medicines %}
-
-                <tr>
-
-                    <td>
-                        {{ forloop.counter }}
-                    </td>
-
-
-                    <td>
-                        {{ medicine.medicine_name }}
-                    </td>
-
-
-                    <td>
-                        <strong>
-                            {{ medicine.quantity }}
-                        </strong>
-                    </td>
-
-
-                    <td>
-                        {{ medicine.expiry_date }}
-                    </td>
-
-
-                    <td>
-
-                        {% if medicine.quantity == 0 %}
-
-                            <span class="badge bg-danger">
-                                Out of Stock
-                            </span>
-
-                        {% elif medicine.quantity <= 3 %}
-
-                            <span class="badge bg-warning text-dark">
-                                Low Stock
-                            </span>
-
-                        {% else %}
-
-                            <span class="badge bg-success">
-                                In Stock
-                            </span>
-
-                        {% endif %}
-
-                    </td>
-
-
-                    <td>
-
-                        <button
-                            type="button"
-                            class="btn btn-primary btn-sm"
-                            data-bs-toggle="modal"
-                            data-bs-target="#updateStockModal{{ medicine.medicine_id }}">
-
-                            Update Stock
-
-                        </button>
-
-                    </td>
-
-                </tr>
-
-
-                <!-- ================= UPDATE STOCK MODAL ================= -->
-
-                <div
-                    class="modal fade"
-                    id="updateStockModal{{ medicine.medicine_id }}"
-                    tabindex="-1">
-
-                    <div class="modal-dialog">
-
-                        <div class="modal-content">
-
-                            <form method="POST">
-
-                                {% csrf_token %}
-
-                                <input
-                                    type="hidden"
-                                    name="action"
-                                    value="update_stock">
-
-                                <input
-                                    type="hidden"
-                                    name="medicine_id"
-                                    value="{{ medicine.medicine_id }}">
-
-
-                                <div class="modal-header">
-
-                                    <h5 class="modal-title">
-                                        Update Stock
-                                    </h5>
-
-                                    <button
-                                        type="button"
-                                        class="btn-close"
-                                        data-bs-dismiss="modal">
-                                    </button>
-
-                                </div>
-
-
-                                <div class="modal-body">
-
-                                    <div class="mb-3">
-
-                                        <label class="form-label">
-                                            Medicine
-                                        </label>
-
-                                        <input
-                                            type="text"
-                                            class="form-control"
-                                            value="{{ medicine.medicine_name }}"
-                                            readonly>
-
-                                    </div>
-
-
-                                    <div class="mb-3">
-
-                                        <label class="form-label">
-                                            Current Stock
-                                        </label>
-
-                                        <input
-                                            type="text"
-                                            class="form-control"
-                                            value="{{ medicine.quantity }}"
-                                            readonly>
-
-                                    </div>
-
-
-                                    <div class="mb-3">
-
-                                        <label class="form-label">
-                                            Add Stock
-                                        </label>
-
-                                        <input
-                                            type="number"
-                                            class="form-control"
-                                            name="add_quantity"
-                                            min="1"
-                                            required
-                                            placeholder="Enter quantity to add">
-
-                                    </div>
-
-
-                                    <div class="mb-3">
-
-                                        <label class="form-label">
-                                            Expiry Date
-                                        </label>
-
-                                        <input
-                                            type="date"
-                                            class="form-control"
-                                            name="expiry_date"
-                                            value="{{ medicine.expiry_date|date:'Y-m-d' }}"
-                                            required>
-
-                                    </div>
-
-                                </div>
-
-
-                                <div class="modal-footer">
-
-                                    <button
-                                        type="button"
-                                        class="btn btn-secondary"
-                                        data-bs-dismiss="modal">
-
-                                        Cancel
-
-                                    </button>
-
-
-                                    <button
-                                        type="submit"
-                                        class="btn btn-primary">
-
-                                        Update Stock
-
-                                    </button>
-
-                                </div>
-
-                            </form>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ medicine.medicine_name }}</td>
+                        <td><strong>{{ medicine.quantity }}</strong></td>
+                        <td>{{ medicine.expiry_date|date:"d-m-Y" }}</td>
+                        <td>
+                            {% if medicine.quantity == 0 %}
+                                <span class="badge bg-danger">Out of Stock</span>
+                            {% elif medicine.quantity <= 3 %}
+                                <span class="badge bg-warning text-dark">Low Stock</span>
+                            {% else %}
+                                <span class="badge bg-success">In Stock</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-primary btn-sm"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#updateStockModal{{ medicine.medicine_id }}">
+                                <i class="bi bi-plus-circle"></i> Update Stock
+                            </button>
+                        </td>
+                    </tr>
                 {% empty %}
-
-                <tr>
-
-                    <td colspan="6" class="text-center">
-                        No medicines found.
-                    </td>
-
-                </tr>
-
+                    <tr>
+                        <td colspan="6" class="text-center">No medicines found.</td>
+                    </tr>
                 {% endfor %}
-
             </tbody>
-
         </table>
-
     </div>
 
 </div>
 
-
-<!-- =====================================================
-     ADD NEW MEDICINE MODAL
-===================================================== -->
-
-<div
-    class="modal fade"
-    id="addMedicineModal"
-    tabindex="-1">
-
+<!-- UPDATE STOCK MODALS -->
+{% for medicine in medicines %}
+<div class="modal fade" id="updateStockModal{{ medicine.medicine_id }}" tabindex="-1">
     <div class="modal-dialog">
-
         <div class="modal-content">
-
             <form method="POST">
-
                 {% csrf_token %}
-
-                <input
-                    type="hidden"
-                    name="action"
-                    value="add_medicine">
-
+                <input type="hidden" name="action" value="update_stock">
+                <input type="hidden" name="medicine_id" value="{{ medicine.medicine_id }}">
 
                 <div class="modal-header">
-
-                    <h5 class="modal-title">
-                        Add New Medicine
-                    </h5>
-
-                    <button
-                        type="button"
-                        class="btn-close"
-                        data-bs-dismiss="modal">
-                    </button>
-
+                    <h5 class="modal-title">Update Stock</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
-
 
                 <div class="modal-body">
-
-                    <!-- Medicine Name -->
-
                     <div class="mb-3">
-
-                        <label class="form-label">
-                            Medicine Name
-                        </label>
-
-                        <input
-                            type="text"
-                            class="form-control"
-                            name="medicine_name"
-                            required
-                            placeholder="Enter medicine name">
-
+                        <label class="form-label">Medicine</label>
+                        <input type="text" class="form-control"
+                               value="{{ medicine.medicine_name }}" readonly>
                     </div>
 
-
-                    <!-- Quantity -->
-
                     <div class="mb-3">
-
-                        <label class="form-label">
-                            Stock
-                        </label>
-
-                        <input
-                            type="number"
-                            class="form-control"
-                            name="quantity"
-                            min="0"
-                            required
-                            placeholder="Enter stock quantity">
-
+                        <label class="form-label">Current Stock</label>
+                        <input type="number" class="form-control"
+                               value="{{ medicine.quantity }}" readonly>
                     </div>
 
-
-                    <!-- Expiry -->
-
                     <div class="mb-3">
-
-                        <label class="form-label">
-                            Expiry Date
-                        </label>
-
-                        <input
-                            type="date"
-                            class="form-control"
-                            name="expiry_date"
-                            required>
-
+                        <label class="form-label">Add Stock</label>
+                        <input type="number" class="form-control"
+                               name="add_quantity" min="1" required
+                               placeholder="Enter quantity to add">
                     </div>
 
-
-                    <!-- Description -->
-
                     <div class="mb-3">
-
-                        <label class="form-label">
-                            Description
-                        </label>
-
-                        <textarea
-                            class="form-control"
-                            name="description"
-                            rows="3"
-                            placeholder="Optional description"></textarea>
-
+                        <label class="form-label">Expiry Date</label>
+                        <input type="date" class="form-control"
+                               name="expiry_date"
+                               value="{{ medicine.expiry_date|date:'Y-m-d' }}"
+                               required>
                     </div>
-
                 </div>
-
 
                 <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                            data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Update Stock</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endfor %}
 
-                    <button
-                        type="button"
-                        class="btn btn-secondary"
-                        data-bs-dismiss="modal">
+<!-- ADD MEDICINE MODAL -->
+<div class="modal fade" id="addMedicineModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="add_medicine">
 
-                        Cancel
-
-                    </button>
-
-
-                    <button
-                        type="submit"
-                        class="btn btn-success">
-
-                        Add Medicine
-
-                    </button>
-
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New Medicine</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
 
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Medicine Name</label>
+                        <input type="text" class="form-control"
+                               name="medicine_name" required
+                               placeholder="Enter medicine name">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Stock</label>
+                        <input type="number" class="form-control"
+                               name="quantity" min="0" required
+                               placeholder="Enter stock quantity">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Expiry Date</label>
+                        <input type="date" class="form-control"
+                               name="expiry_date" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <textarea class="form-control" name="description"
+                                  rows="3" placeholder="Optional description"></textarea>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                            data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-success">
+                        <i class="bi bi-plus-circle"></i> Add Medicine
+                    </button>
+                </div>
             </form>
-
         </div>
-
     </div>
-
 </div>
 
 {% endblock %}
